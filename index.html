@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machine Observation Report Tool</title>
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4895ef;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4cc9f0;
+            --warning-color: #f8961e;
+            --danger-color: #f72585;
+            --border-radius: 12px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+            font-weight: 500;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+
+        select, input, textarea {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        select:focus, input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: var(--transition);
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-danger {
+            background: var(--danger-color);
+        }
+
+        .btn-danger:hover {
+            background: #d1145a;
+        }
+
+        .btn-sm {
+            padding: 4px 8px;
+            font-size: 10px;
+            min-width: 70px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .status-dropdowns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .status-dropdown {
+            width: 100%;
+        }
+
+        .status-dropdown select {
+            padding: 6px 10px;
+            font-size: 12px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 25px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .checkbox-item input {
+            width: auto;
+        }
+
+        .part-info {
+            background: #f8f9fa;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin-top: 20px;
+            border-left: 4px solid var(--accent-color);
+            position: relative;
+        }
+
+        .part-info h4 {
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .remove-part-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .remove-part {
+            width: 100px;
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 20px;
+            border-radius: var(--border-radius);
+            border: 1px solid #ddd;
+        }
+
+        .observation-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            min-width: 900px;
+        }
+
+        .observation-table th, .observation-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+        }
+
+        .observation-table th {
+            background-color: var(--primary-color);
+            color: white;
+            position: sticky;
+            top: 0;
+            border-right: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .observation-table th:last-child {
+            border-right: none;
+        }
+
+        .observation-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .observation-table tr:hover {
+            background-color: #e9ecef;
+        }
+
+        .observation-table input {
+            width: 100%;
+            padding: 6px 8px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .alternate-gc-input {
+            width: 100%;
+            padding: 6px 8px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .tolerance {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tolerance .upper {
+            color: var(--danger-color);
+        }
+
+        .tolerance .lower {
+            color: var(--success-color);
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .search-box input {
+            padding-left: 40px;
+        }
+
+        .search-box::before {
+            content: "🔍";
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+        }
+
+        .part-list {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            margin-top: 10px;
+            display: none;
+            position: absolute;
+            width: calc(100% - 30px);
+            background: white;
+            z-index: 100;
+        }
+
+        .part-item {
+            padding: 10px 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .part-item:hover {
+            background-color: #f0f7ff;
+        }
+
+        .part-item:last-child {
+            border-bottom: none;
+        }
+
+        .no-results {
+            padding: 15px;
+            text-align: center;
+            color: #6c757d;
+        }
+
+        .selected-parts-container {
+            margin-top: 30px;
+        }
+
+        /* Summary Modal Styles */
+        .summary-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .summary-content {
+            background: white;
+            padding: 25px;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .summary-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark-color);
+        }
+
+        .summary-close:hover {
+            color: var(--danger-color);
+        }
+
+        .summary-title {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            text-align: center;
+        }
+
+        .machine-summary {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .machine-summary:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .machine-name {
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .part-summary {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .part-name {
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .detail-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .detail-column {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-item {
+            margin-bottom: 5px;
+        }
+
+        .detail-label {
+            font-weight: 500;
+            display: inline-block;
+            min-width: 120px;
+        }
+
+        .no-parts {
+            font-style: italic;
+            color: #6c757d;
+            margin-left: 20px;
+        }
+
+        /* Summary Status Colors */
+        .status-on {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .status-off {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .status-maintenance {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .status-setup {
+            color: #007bff;
+            font-weight: bold;
+        }
+        .status-setup-change {
+            color: #007bff;
+            font-weight: bold;
+        }
+        .status-development {
+            color: #ffc107;
+            font-weight: bold;
+        }
+        .check-tick {
+            color: #28a745;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        .check-cross {
+            color: #dc3545;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        @media (max-width: 768px) {
+            .status-dropdown {
+                min-width: 100%;
+            }
+            
+            .btn-group {
+                flex-direction: row;
+            }
+            
+            .btn {
+                width: auto;
+            }
+            
+            .observation-table {
+                font-size: 14px;
+            }
+            
+            .observation-table th, .observation-table td {
+                padding: 8px 10px;
+            }
+
+            .detail-columns {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading spinner */
+        .spinner {
+            display: none;
+            width: 40px;
+            height: 40px;
+            margin: 20px auto;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary-color);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Inprocess Inspection Report</h1>
+            <p> </p>
+        </header>
+
+        <button class="btn" id="summary-btn" style="margin-bottom: 20px;">View Machine Summary</button>
+
+        <div class="card">
+            <h2 class="card-title">Machine & Part Selection</h2>
+            <div class="form-group">
+                <label for="machine-select">Select Machine</label>
+                <select id="machine-select" class="form-control">
+                    <option value="">-- Select a machine --</option>
+                    <option value="PMT-A">PMT-A</option>
+                    <option value="PMT-B">PMT-B</option>
+                    <option value="PMT-C">PMT-C</option>
+                    <option value="PMT-D">PMT-D</option>
+                    <option value="PMT-E">PMT-E</option>
+                    <option value="OD-D">OD-D</option>
+                    <option value="OD-E">OD-E</option>
+                    <option value="OD-F">OD-F</option>
+                    <option value="OD-G">OD-G</option>
+                    <option value="OD-I">OD-I</option>
+                    <option value="OD-K">OD-K</option>
+                    <option value="LMW-Q">LMW-Q</option>
+                    <option value="LMW-R">LMW-R</option>
+                    <option value="LMW-S">LMW-S</option>
+                    <option value="LMW-T">LMW-T</option>
+                    <option value="LMW-U">LMW-U</option>
+                    <option value="LMW-V">LMW-V</option>
+                    <option value="LMW-W">LMW-W</option>
+                    <option value="SR-D">SR-D</option>
+                    <option value="SR-E">SR-E</option>
+                    <option value="SR-F">SR-F</option>
+                    <option value="GR-B">GR-B</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="part-search">Search Parts</label>
+                <div class="search-box">
+                    <input type="text" id="part-search" placeholder="Click to search parts...">
+                </div>
+                <div class="part-list" id="part-list">
+                    <!-- Parts will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <div class="selected-parts-container" id="selected-parts-container">
+            <!-- Selected parts with their tables will appear here -->
+        </div>
+
+        <div class="spinner" id="loading-spinner"></div>
+    </div>
+
+    <!-- Summary Modal -->
+    <div class="summary-modal" id="summary-modal">
+        <div class="summary-content">
+            <span class="summary-close" id="summary-close">&times;</span>
+            <h2 class="summary-title">Machine Summary</h2>
+            <div id="summary-list">
+                <!-- Summary will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Extended sample data for parts with tolerance values
+        const partsDatabase = [
+            {
+                id: 'p001',
+                name: 'Hydraulic Pump Assembly',
+                note: 'High-pressure pump for main hydraulic system. Requires regular lubrication.',
+                machineCompatibility: ['PMT-A', 'PMT-B', 'PMT-C'],
+                characteristics: [
+                    {
+                        name: 'Flow Rate',
+                        specification: '46.5 (+0.025/+0.009)',
+                        measurement: 'Flow meter at outlet',
+                        gcNo: 'GC-101',
+                        tolerance: {
+                            upper: 0.022,
+                            lower: 0.015,
+                            step: 0.001
+                        }
+                    },
+                    {
+                        name: 'Pressure Rating',
+                        specification: '200 +10 -0 bar',
+                        measurement: 'Pressure gauge at test port',
+                        gcNo: 'GC-102',
+                        tolerance: {
+                            upper: 10,
+                            lower: 0,
+                            step: 0.5
+                        }
+                    },
+                    {
+                        name: 'Temperature Range',
+                        specification: '20-80 °C',
+                        measurement: 'Infrared thermometer',
+                        gcNo: 'GC-103',
+                        tolerance: {
+                            upper: 5,
+                            lower: 5,
+                            step: 1
+                        }
+                    }
+                ]
+            },
+            {
+                id: 'p002',
+                name: 'Spindle Bearing',
+                note: 'Precision bearing for main spindle. Handle with care to avoid contamination.',
+                machineCompatibility: ['PMT-A', 'PMT-D'],
+                characteristics: [
+                    {
+                        name: 'Radial Play',
+                        specification: '0.005 +0.001 -0.0005 mm',
+                        measurement: 'Dial indicator',
+                        gcNo: 'GC-201',
+                        tolerance: {
+                            upper: 0.001,
+                            lower: 0.0005,
+                            step: 0.0001
+                        }
+                    },
+                    {
+                        name: 'Runout',
+                        specification: '0.002 max mm',
+                        measurement: 'Runout gauge',
+                        gcNo: 'GC-202',
+                        tolerance: {
+                            upper: 0.001,
+                            lower: 0,
+                            step: 0.0001
+                        }
+                    },
+                    {
+                        name: 'Vibration Level',
+                        specification: '2.5 max m/s²',
+                        measurement: 'Vibration analyzer',
+                        gcNo: 'GC-203',
+                        tolerance: {
+                            upper: 0.5,
+                            lower: 0,
+                            step: 0.1
+                        }
+                    }
+                ]
+            },
+            {
+                id: 'p003',
+                name: 'Control Panel PCB',
+                note: 'Main control board for machine operations. Static sensitive component.',
+                machineCompatibility: ['PMT-B', 'PMT-C', 'PMT-E'],
+                characteristics: [
+                    {
+                        name: 'Voltage Regulation',
+                        specification: '5.0 ±0.05 V',
+                        measurement: 'Digital multimeter',
+                        gcNo: 'GC-301',
+                        tolerance: {
+                            upper: 0.05,
+                            lower: 0.05,
+                            step: 0.01
+                        }
+                    },
+                    {
+                        name: 'Signal Integrity',
+                        specification: 'Noise < 50mV p-p',
+                        measurement: 'Oscilloscope',
+                        gcNo: 'GC-302',
+                        tolerance: {
+                            upper: 10,
+                            lower: 0,
+                            step: 1
+                        }
+                    },
+                    {
+                        name: 'Temperature Rise',
+                        specification: '15 max °C above ambient',
+                        measurement: 'Thermal camera',
+                        gcNo: 'GC-303',
+                        tolerance: {
+                            upper: 3,
+                            lower: 0,
+                            step: 0.5
+                        }
+                    }
+                ]
+            },
+            {
+                id: 'p004',
+                name: 'Linear Guide Rail',
+                note: 'Precision ground rail for X-axis movement. Keep clean and lubricated.',
+                machineCompatibility: ['PMT-A', 'PMT-C', 'PMT-D', 'PMT-E'],
+                characteristics: [
+                    {
+                        name: 'Flatness',
+                        specification: '0.01/100mm',
+                        measurement: 'Precision level',
+                        gcNo: 'GC-401',
+                        tolerance: {
+                            upper: 0.002,
+                            lower: 0,
+                            step: 0.001
+                        }
+                    },
+                    {
+                        name: 'Parallelism',
+                        specification: '0.015 max mm',
+                        measurement: 'Comparator',
+                        gcNo: 'GC-402',
+                        tolerance: {
+                            upper: 0.003,
+                            lower: 0,
+                            step: 0.001
+                        }
+                    },
+                    {
+                        name: 'Surface Finish',
+                        specification: 'Ra 0.4 max µm',
+                        measurement: 'Surface profilometer',
+                        gcNo: 'GC-403',
+                        tolerance: {
+                            upper: 0.05,
+                            lower: 0,
+                            step: 0.01
+                        }
+                    }
+                ]
+            },
+            {
+                id: 'p005',
+                name: 'Coolant Nozzle',
+                note: 'Adjustable nozzle for cutting fluid delivery. Check for clogs regularly.',
+                machineCompatibility: ['PMT-B', 'PMT-E'],
+                characteristics: [
+                    {
+                        name: 'Flow Pattern',
+                        specification: 'Even 30° cone',
+                        measurement: 'Visual inspection',
+                        gcNo: 'GC-501',
+                        tolerance: {
+                            upper: 5,
+                            lower: 5,
+                            step: 1
+                        }
+                    },
+                    {
+                        name: 'Flow Rate',
+                        specification: '2.0 ±0.2 L/min',
+                        measurement: 'Collect and measure',
+                        gcNo: 'GC-502',
+                        tolerance: {
+                            upper: 0.2,
+                            lower: 0.2,
+                            step: 0.05
+                        }
+                    },
+                    {
+                        name: 'Alignment',
+                        specification: '±1.0 mm to center',
+                        measurement: 'Alignment gauge',
+                        gcNo: 'GC-503',
+                        tolerance: {
+                            upper: 0.2,
+                            lower: 0.2,
+                            step: 0.1
+                        }
+                    }
+                ]
+            }
+        ];
+
+        // DOM elements
+        const machineSelect = document.getElementById('machine-select');
+        const partSearch = document.getElementById('part-search');
+        const partList = document.getElementById('part-list');
+        const selectedPartsContainer = document.getElementById('selected-parts-container');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const summaryBtn = document.getElementById('summary-btn');
+        const summaryModal = document.getElementById('summary-modal');
+        const summaryClose = document.getElementById('summary-close');
+        const summaryList = document.getElementById('summary-list');
+
+        // Current state
+        let currentMachine = '';
+        let machinePartsMap = {}; // { machineId: { partId: { observations: {}, alternateGC: {}, checkboxes: {}, dropdowns: {} } } }
+
+        // Initialize the app
+        function init() {
+            loadFromLocalStorage();
+            
+            machineSelect.addEventListener('change', handleMachineSelect);
+            partSearch.addEventListener('focus', handleSearchFocus);
+            partSearch.addEventListener('input', handlePartSearch);
+            summaryBtn.addEventListener('click', showSummary);
+            summaryClose.addEventListener('click', () => {
+                summaryModal.style.display = 'none';
+            });
+            
+            // Close part list when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!partSearch.contains(e.target) && !partList.contains(e.target)) {
+                    partList.style.display = 'none';
+                }
+            });
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', (e) => {
+                if (e.target === summaryModal) {
+                    summaryModal.style.display = 'none';
+                }
+            });
+        }
+
+        // Load data from localStorage
+        function loadFromLocalStorage() {
+            const savedData = localStorage.getItem('machineObservationData');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                if (data.machinePartsMap) {
+                    machinePartsMap = data.machinePartsMap;
+                }
+                if (data.currentMachine) {
+                    machineSelect.value = data.currentMachine;
+                    currentMachine = data.currentMachine;
+                    showPartsForMachine(currentMachine);
+                }
+            }
+        }
+
+        // Save data to localStorage
+        function saveToLocalStorage() {
+            const data = {
+                currentMachine,
+                machinePartsMap
+            };
+            localStorage.setItem('machineObservationData', JSON.stringify(data));
+        }
+
+        // Show machine summary
+        function showSummary() {
+            summaryList.innerHTML = '';
+            
+            // Get all machine IDs from the select dropdown
+            const machineOptions = machineSelect.querySelectorAll('option');
+            const allMachineIds = Array.from(machineOptions)
+                .map(option => option.value)
+                .filter(value => value !== ''); // Remove the empty option
+            
+            if (allMachineIds.length === 0) {
+                summaryList.innerHTML = '<p>No machines available</p>';
+                summaryModal.style.display = 'flex';
+                return;
+            }
+            
+            allMachineIds.forEach(machineId => {
+                const machineItem = document.createElement('div');
+                machineItem.className = 'machine-summary';
+                
+                const machineTitle = document.createElement('h3');
+                machineTitle.className = 'machine-name';
+                machineTitle.textContent = `Machine: ${machineId}`;
+                machineItem.appendChild(machineTitle);
+                
+                if (!machinePartsMap[machineId] || Object.keys(machinePartsMap[machineId]).length === 0) {
+                    const noParts = document.createElement('p');
+                    noParts.className = 'no-parts';
+                    noParts.textContent = 'No parts selected for this machine';
+                    machineItem.appendChild(noParts);
+                } else {
+                    for (const partId in machinePartsMap[machineId]) {
+                        const part = partsDatabase.find(p => p.id === partId);
+                        if (part) {
+                            const partSummary = document.createElement('div');
+                            partSummary.className = 'part-summary';
+                            
+                            const partName = document.createElement('div');
+                            partName.className = 'part-name';
+                            partName.textContent = part.name;
+                            partSummary.appendChild(partName);
+                            
+                            // Create columns container
+                            const columnsContainer = document.createElement('div');
+                            columnsContainer.className = 'detail-columns';
+                            
+                            // Create first column for checklist items
+                            const checklistColumn = document.createElement('div');
+                            checklistColumn.className = 'detail-column';
+                            
+                            const checklistTitle = document.createElement('h4');
+                            checklistTitle.textContent = 'Checklist Items';
+                            checklistColumn.appendChild(checklistTitle);
+                            
+                            const inspectionItem = document.createElement('div');
+                            inspectionItem.className = 'detail-item';
+                            inspectionItem.innerHTML = `
+                                <span class="detail-label">Inspection report:</span>
+                                <span class="${machinePartsMap[machineId][partId].checkboxes.inspectionChecked ? 'check-tick' : 'check-cross'}">
+                                    ${machinePartsMap[machineId][partId].checkboxes.inspectionChecked ? '✓' : '✗'}
+                                </span>
+                            `;
+                            checklistColumn.appendChild(inspectionItem);
+                            
+                            const calibrationItem = document.createElement('div');
+                            calibrationItem.className = 'detail-item';
+                            calibrationItem.innerHTML = `
+                                <span class="detail-label">Calibration date:</span>
+                                <span class="${machinePartsMap[machineId][partId].checkboxes.calibrationChecked ? 'check-tick' : 'check-cross'}">
+                                    ${machinePartsMap[machineId][partId].checkboxes.calibrationChecked ? '✓' : '✗'}
+                                </span>
+                            `;
+                            checklistColumn.appendChild(calibrationItem);
+                            
+                            columnsContainer.appendChild(checklistColumn);
+                            
+                            // Create second column for observation dropdowns
+                            const dropdownsColumn = document.createElement('div');
+                            dropdownsColumn.className = 'detail-column';
+                            
+                            const dropdownsTitle = document.createElement('h4');
+                            dropdownsTitle.textContent = 'Observation Status';
+                            dropdownsColumn.appendChild(dropdownsTitle);
+                            
+                            for (let i = 1; i <= 4; i++) {
+                                const status = machinePartsMap[machineId][partId].dropdowns[`status${i}`];
+                                let statusClass = '';
+                                
+                                if (status === 'On') statusClass = 'status-on';
+                                else if (status === 'Off' || status === 'Maintenance') statusClass = 'status-off';
+                                else if (status === 'Setup' || status === 'Setup Change') statusClass = 'status-setup';
+                                else if (status === 'Development Part') statusClass = 'status-development';
+                                
+                                const dropdownItem = document.createElement('div');
+                                dropdownItem.className = 'detail-item';
+                                dropdownItem.innerHTML = `
+                                    <span class="detail-label">Observation ${i}:</span>
+                                    <span class="${statusClass}">${status}</span>
+                                `;
+                                dropdownsColumn.appendChild(dropdownItem);
+                            }
+                            
+                            columnsContainer.appendChild(dropdownsColumn);
+                            partSummary.appendChild(columnsContainer);
+                            machineItem.appendChild(partSummary);
+                        }
+                    }
+                }
+                
+                summaryList.appendChild(machineItem);
+            });
+            
+            summaryModal.style.display = 'flex';
+        }
+
+        // Handle machine selection
+        function handleMachineSelect(e) {
+            currentMachine = e.target.value;
+            if (currentMachine) {
+                showPartsForMachine(currentMachine);
+                saveToLocalStorage();
+            } else {
+                selectedPartsContainer.innerHTML = '';
+            }
+        }
+
+        // Show parts for selected machine
+        function showPartsForMachine(machineId) {
+            selectedPartsContainer.innerHTML = '';
+            
+            if (machinePartsMap[machineId]) {
+                for (const partId in machinePartsMap[machineId]) {
+                    const part = partsDatabase.find(p => p.id === partId);
+                    if (part) {
+                        addPartToUI(part);
+                    }
+                }
+            }
+        }
+
+        // Handle search focus
+        function handleSearchFocus() {
+            if (currentMachine) {
+                filterPartsByMachine();
+                partList.style.display = 'block';
+            } else {
+                partSearch.blur();
+            }
+        }
+
+        // Filter parts by selected machine
+        function filterPartsByMachine() {
+            if (!currentMachine) return;
+            
+            const filteredParts = partsDatabase.filter(part => 
+                part.machineCompatibility.includes(currentMachine) &&
+                (!machinePartsMap[currentMachine] || !machinePartsMap[currentMachine][part.id])
+            );
+            
+            renderPartList(filteredParts);
+        }
+
+        // Handle part search
+        function handlePartSearch(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            
+            if (!searchTerm) {
+                filterPartsByMachine();
+                return;
+            }
+            
+            const results = partsDatabase.filter(part => 
+                part.name.toLowerCase().includes(searchTerm) && 
+                part.machineCompatibility.includes(currentMachine) &&
+                (!machinePartsMap[currentMachine] || !machinePartsMap[currentMachine][part.id])
+            );
+            
+            renderPartList(results);
+        }
+
+        // Render part list
+        function renderPartList(parts) {
+            if (!parts.length) {
+                partList.innerHTML = '<div class="no-results">No parts found</div>';
+                return;
+            }
+            
+            partList.innerHTML = parts.map(part => `
+                <div class="part-item" data-id="${part.id}">
+                    <strong>${part.name}</strong>
+                </div>
+            `).join('');
+            
+            // Add click handlers to part items
+            document.querySelectorAll('.part-item').forEach(item => {
+                item.addEventListener('click', () => selectPart(item.dataset.id));
+            });
+        }
+
+        // Select a part
+        function selectPart(partId) {
+            const part = partsDatabase.find(p => p.id === partId);
+            
+            if (!part) return;
+            
+            // Initialize machine parts map if not exists
+            if (!machinePartsMap[currentMachine]) {
+                machinePartsMap[currentMachine] = {};
+            }
+            
+            // Initialize part data if not exists
+            if (!machinePartsMap[currentMachine][partId]) {
+                machinePartsMap[currentMachine][partId] = {
+                    observations: {},
+                    alternateGC: {},
+                    checkboxes: {
+                        inspectionChecked: false,
+                        calibrationChecked: false
+                    },
+                    dropdowns: {
+                        status1: 'NA',
+                        status2: 'NA',
+                        status3: 'NA',
+                        status4: 'NA'
+                    }
+                };
+            }
+            
+            saveToLocalStorage();
+            
+            // Add to UI
+            addPartToUI(part);
+            
+            // Reset search
+            partSearch.value = '';
+            partList.style.display = 'none';
+            partList.innerHTML = '';
+        }
+
+        // Add part to UI
+        function addPartToUI(part) {
+            const partCard = document.createElement('div');
+            partCard.className = 'card part-info';
+            partCard.dataset.partId = part.id;
+            partCard.dataset.machineId = currentMachine;
+            
+            partCard.innerHTML = `
+                <div class="remove-part-container">
+                    <button class="btn btn-danger btn-sm remove-part">Remove</button>
+                </div>
+                <h4>${part.name}</h4>
+                <p>${part.note}</p>
+                
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="inspection-checked-${part.id}" ${machinePartsMap[currentMachine][part.id].checkboxes.inspectionChecked ? 'checked' : ''}>
+                        <label for="inspection-checked-${part.id}">1st Piece Report</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="calibration-checked-${part.id}" ${machinePartsMap[currentMachine][part.id].checkboxes.calibrationChecked ? 'checked' : ''}>
+                        <label for="calibration-checked-${part.id}">Calibration Due</label>
+                    </div>
+                </div>
+
+                <div class="status-dropdowns">
+                    <div class="status-dropdown">
+                        <label for="status-1-${part.id}">Observation 1</label>
+                        <select id="status-1-${part.id}">
+                            <option value="NA" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'NA' ? 'selected' : ''}>NA</option>
+                            <option value="On" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'On' ? 'selected' : ''}>On</option>
+                            <option value="Off" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'Off' ? 'selected' : ''}>Off</option>
+                            <option value="Maintenance" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'Maintenance' ? 'selected' : ''}>Maintenance</option>
+                            <option value="Setup" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'Setup' ? 'selected' : ''}>Setup</option>
+                            <option value="Setup Change" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'Setup Change' ? 'selected' : ''}>Setup Change</option>
+                            <option value="Development Part" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'Development Part' ? 'selected' : ''}>Development Part</option>
+                        </select>
+                    </div>
+                    <div class="status-dropdown">
+                        <label for="status-2-${part.id}">Observation 2</label>
+                        <select id="status-2-${part.id}">
+                            <option value="NA" ${machinePartsMap[currentMachine][part.id].dropdowns.status2 === 'NA' ? 'selected' : ''}>NA</option>
+                            <option value="On" ${machinePartsMap[currentMachine][part.id].dropdowns.status2 === 'On' ? 'selected' : ''}>On</option>
+                            <option value="Off" ${machinePartsMap[currentMachine][part.id].dropdowns.status2 === 'Off' ? 'selected' : ''}>Off</option>
+                            <option value="Maintenance" ${machinePartsMap[currentMachine][part.id].dropdowns.status2 === 'Maintenance' ? 'selected' : ''}>Maintenance</option>
+                            <option value="Setup" ${machinePartsMap[currentMachine][part.id].dropdowns.status2 === 'Setup' ? 'selected' : ''}>Setup</option>
+                            <option value="Setup Change" ${machinePartsMap[currentMachine][part.id].dropdowns.status2 === 'Setup Change' ? 'selected' : ''}>Setup Change</option>
+                            <option value="Development Part" ${machinePartsMap[currentMachine][part.id].dropdowns.status2 === 'Development Part' ? 'selected' : ''}>Development Part</option>
+                        </select>
+                    </div>
+                    <div class="status-dropdown">
+                        <label for="status-3-${part.id}">Observation 3</label>
+                        <select id="status-3-${part.id}">
+                            <option value="NA" ${machinePartsMap[currentMachine][part.id].dropdowns.status3 === 'NA' ? 'selected' : ''}>NA</option>
+                            <option value="On" ${machinePartsMap[currentMachine][part.id].dropdowns.status3 === 'On' ? 'selected' : ''}>On</option>
+                            <option value="Off" ${machinePartsMap[currentMachine][part.id].dropdowns.status3 === 'Off' ? 'selected' : ''}>Off</option>
+                            <option value="Maintenance" ${machinePartsMap[currentMachine][part.id].dropdowns.status3 === 'Maintenance' ? 'selected' : ''}>Maintenance</option>
+                            <option value="Setup" ${machinePartsMap[currentMachine][part.id].dropdowns.status3 === 'Setup' ? 'selected' : ''}>Setup</option>
+                            <option value="Setup Change" ${machinePartsMap[currentMachine][part.id].dropdowns.status3 === 'Setup Change' ? 'selected' : ''}>Setup Change</option>
+                            <option value="Development Part" ${machinePartsMap[currentMachine][part.id].dropdowns.status3 === 'Development Part' ? 'selected' : ''}>Development Part</option>
+                        </select>
+                    </div>
+                    <div class="status-dropdown">
+                        <label for="status-4-${part.id}">Observation 4</label>
+                        <select id="status-4-${part.id}">
+                            <option value="NA" ${machinePartsMap[currentMachine][part.id].dropdowns.status4 === 'NA' ? 'selected' : ''}>NA</option>
+                            <option value="On" ${machinePartsMap[currentMachine][part.id].dropdowns.status4 === 'On' ? 'selected' : ''}>On</option>
+                            <option value="Off" ${machinePartsMap[currentMachine][part.id].dropdowns.status4 === 'Off' ? 'selected' : ''}>Off</option>
+                            <option value="Maintenance" ${machinePartsMap[currentMachine][part.id].dropdowns.status4 === 'Maintenance' ? 'selected' : ''}>Maintenance</option>
+                            <option value="Setup" ${machinePartsMap[currentMachine][part.id].dropdowns.status4 === 'Setup' ? 'selected' : ''}>Setup</option>
+                            <option value="Setup Change" ${machinePartsMap[currentMachine][part.id].dropdowns.status4 === 'Setup Change' ? 'selected' : ''}>Setup Change</option>
+                            <option value="Development Part" ${machinePartsMap[currentMachine][part.id].dropdowns.status4 === 'Development Part' ? 'selected' : ''}>Development Part</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="observation-table">
+                        <thead>
+                            <tr>
+                                <th>Characteristics</th>
+                                <th>Specifications</th>
+                                <th>Measurement Techniques</th>
+                                <th>GC No.</th>
+                                <th>Alternate GC No.</th>
+                                <th>Observation 1</th>
+                                <th>Observation 2</th>
+                                <th>Observation 3</th>
+                                <th>Observation 4</th>
+                            </tr>
+                        </thead>
+                        <tbody class="observation-body" data-part-id="${part.id}">
+                            ${renderObservationRows(part)}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-sm fill-obs-1" data-part-id="${part.id}">Fill Obs 1</button>
+                    <button class="btn btn-sm btn-secondary clear-obs-1" data-part-id="${part.id}">Clear Obs 1</button>
+                    <button class="btn btn-sm fill-obs-2" data-part-id="${part.id}">Fill Obs 2</button>
+                    <button class="btn btn-sm btn-secondary clear-obs-2" data-part-id="${part.id}">Clear Obs 2</button>
+                    <button class="btn btn-sm fill-obs-3" data-part-id="${part.id}">Fill Obs 3</button>
+                    <button class="btn btn-sm btn-secondary clear-obs-3" data-part-id="${part.id}">Clear Obs 3</button>
+                    <button class="btn btn-sm fill-obs-4" data-part-id="${part.id}">Fill Obs 4</button>
+                    <button class="btn btn-sm btn-secondary clear-obs-4" data-part-id="${part.id}">Clear Obs 4</button>
+                </div>
+            `;
+            
+            selectedPartsContainer.appendChild(partCard);
+            
+            // Add event listeners
+            partCard.querySelector('.remove-part').addEventListener('click', () => removePart(part.id));
+            
+            // Add listeners for each observation button
+            for (let i = 1; i <= 4; i++) {
+                partCard.querySelector(`.fill-obs-${i}`).addEventListener('click', () => fillObservation(part.id, i));
+                partCard.querySelector(`.clear-obs-${i}`).addEventListener('click', () => clearObservation(part.id, i));
+            }
+            
+            // Add listeners for checkboxes
+            partCard.querySelector(`#inspection-checked-${part.id}`).addEventListener('change', (e) => {
+                machinePartsMap[currentMachine][part.id].checkboxes.inspectionChecked = e.target.checked;
+                saveToLocalStorage();
+            });
+            
+            partCard.querySelector(`#calibration-checked-${part.id}`).addEventListener('change', (e) => {
+                machinePartsMap[currentMachine][part.id].checkboxes.calibrationChecked = e.target.checked;
+                saveToLocalStorage();
+            });
+            
+            // Add listeners for dropdowns
+            for (let i = 1; i <= 4; i++) {
+                partCard.querySelector(`#status-${i}-${part.id}`).addEventListener('change', (e) => {
+                    machinePartsMap[currentMachine][part.id].dropdowns[`status${i}`] = e.target.value;
+                    saveToLocalStorage();
+                });
+            }
+            
+            // Add input change listeners for observation fields
+            partCard.querySelectorAll('.observation-input').forEach(input => {
+                input.addEventListener('change', (e) => {
+                    saveObservationValue(
+                        part.id, 
+                        e.target.dataset.char, 
+                        e.target.dataset.obs, 
+                        e.target.value
+                    );
+                });
+            });
+            
+            // Add input change listeners for alternate GC fields
+            partCard.querySelectorAll('.alternate-gc-input').forEach(input => {
+                input.addEventListener('change', (e) => {
+                    saveAlternateGC(
+                        part.id, 
+                        e.target.dataset.char, 
+                        e.target.value
+                    );
+                });
+            });
+            
+            // Load saved observation values
+            loadSavedObservations(part.id);
+        }
+
+        // Render observation rows
+        function renderObservationRows(part) {
+            return part.characteristics.map(char => {
+                // Parse specification for tolerance formatting
+                const specParts = char.specification.split(' ');
+                let specDisplay = char.specification;
+                
+                if (specParts.length > 1 && (specParts[1].includes('+') || specParts[1].includes('±'))) {
+                    const base = specParts[0];
+                    const tolerance = specParts[1];
+                    
+                    if (tolerance.includes('±')) {
+                        const val = tolerance.replace('±', '');
+                        specDisplay = `
+                            <div class="tolerance">
+                                <span>${base}</span>
+                                <span class="upper">±${val}</span>
+                            </div>
+                        `;
+                    } else if (tolerance.includes('+') && tolerance.includes('-')) {
+                        const parts = tolerance.split(/[+-]/);
+                        const upper = parts[1];
+                        const lower = parts[2];
+                        specDisplay = `
+                            <div class="tolerance">
+                                <span>${base}</span>
+                                <span class="upper">+${upper}</span>
+                                <span class="lower">-${lower}</span>
+                            </div>
+                        `;
+                    }
+                }
+                
+                // Get saved observation values if they exist
+                const obs1Value = machinePartsMap[currentMachine][part.id].observations?.[char.name]?.['1'] || '';
+                const obs2Value = machinePartsMap[currentMachine][part.id].observations?.[char.name]?.['2'] || '';
+                const obs3Value = machinePartsMap[currentMachine][part.id].observations?.[char.name]?.['3'] || '';
+                const obs4Value = machinePartsMap[currentMachine][part.id].observations?.[char.name]?.['4'] || '';
+                
+                // Get saved alternate GC value if it exists
+                const alternateGcValue = machinePartsMap[currentMachine][part.id].alternateGC?.[char.name] || '';
+                
+                return `
+                    <tr>
+                        <td>${char.name}</td>
+                        <td>${specDisplay}</td>
+                        <td>${char.measurement}</td>
+                        <td>${char.gcNo}</td>
+                        <td><input type="text" class="alternate-gc-input" data-char="${char.name}" data-part-id="${part.id}" value="${alternateGcValue}"></td>
+                        <td><input type="text" class="observation-input" data-char="${char.name}" data-obs="1" data-part-id="${part.id}" value="${obs1Value}"></td>
+                        <td><input type="text" class="observation-input" data-char="${char.name}" data-obs="2" data-part-id="${part.id}" value="${obs2Value}"></td>
+                        <td><input type="text" class="observation-input" data-char="${char.name}" data-obs="3" data-part-id="${part.id}" value="${obs3Value}"></td>
+                        <td><input type="text" class="observation-input" data-char="${char.name}" data-obs="4" data-part-id="${part.id}" value="${obs4Value}"></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Remove a part
+        function removePart(partId) {
+            if (machinePartsMap[currentMachine] && machinePartsMap[currentMachine][partId]) {
+                delete machinePartsMap[currentMachine][partId];
+            }
+            
+            document.querySelector(`.part-info[data-part-id="${partId}"]`).remove();
+            saveToLocalStorage();
+        }
+
+        // Fill a specific observation column
+        function fillObservation(partId, obsNum) {
+            const part = partsDatabase.find(p => p.id === partId);
+            
+            if (!part) return;
+            
+            const inputs = document.querySelectorAll(`.observation-input[data-part-id="${partId}"][data-obs="${obsNum}"]`);
+            
+            inputs.forEach(input => {
+                // Skip if already has a value (preserve manual entries)
+                if (input.value.trim() !== '') return;
+                
+                const charName = input.dataset.char;
+                const characteristic = part.characteristics.find(c => c.name === charName);
+                
+                if (!characteristic) return;
+                
+                const spec = characteristic.specification;
+                let value = '';
+                
+                // Use tolerance values if available
+                if (characteristic.tolerance) {
+                    const upper = characteristic.tolerance.upper;
+                    const lower = characteristic.tolerance.lower;
+                    const step = characteristic.tolerance.step || 0.1;
+                    
+                    // Calculate the number of possible steps
+                    const totalSteps = Math.floor((upper + lower) / step);
+                    
+                    // Generate a random step
+                    const randomStep = Math.floor(Math.random() * (totalSteps + 1));
+                    
+                    // Calculate the value within tolerance range
+                    const toleranceValue = (randomStep * step - lower).toFixed(3);
+                    
+                    // Format the value with + or - sign
+                    if (toleranceValue >= 0) {
+                        value = `+${toleranceValue}`;
+                    } else {
+                        value = toleranceValue; // already has - sign
+                    }
+                } 
+                // Fallback to previous logic if no tolerance specified
+                else if (spec.includes('±')) {
+                    const parts = spec.split('±');
+                    const tolerance = parseFloat(parts[1].split(' ')[0]);
+                    const randomValue = (Math.random() * 2 - 1) * tolerance;
+                    value = randomValue >= 0 ? `+${randomValue.toFixed(3)}` : randomValue.toFixed(3);
+                } else if (spec.includes('+') && spec.includes('-')) {
+                    const parts = spec.split(/[ +-]/);
+                    const upper = parseFloat(parts[2]);
+                    const lower = parseFloat(parts[3]);
+                    const randomValue = Math.random() * (upper + lower) - lower;
+                    value = randomValue >= 0 ? `+${randomValue.toFixed(3)}` : randomValue.toFixed(3);
+                } else if (spec.includes('max')) {
+                    const maxVal = parseFloat(spec.split('max')[0]);
+                    const randomValue = Math.random() * maxVal * 0.8;
+                    value = randomValue.toFixed(3);
+                } else if (spec.includes('-')) {
+                    const range = spec.split('-').map(parseFloat);
+                    const randomValue = range[0] + Math.random() * (range[1] - range[0]);
+                    value = randomValue.toFixed(1);
+                } else {
+                    value = 'OK'; // Fallback for non-numeric specs
+                }
+                
+                input.value = value;
+                saveObservationValue(partId, charName, obsNum, value);
+            });
+        }
+
+        // Clear a specific observation column
+        function clearObservation(partId, obsNum) {
+            const inputs = document.querySelectorAll(`.observation-input[data-part-id="${partId}"][data-obs="${obsNum}"]`);
+            inputs.forEach(input => {
+                input.value = '';
+                saveObservationValue(partId, input.dataset.char, obsNum, '');
+            });
+        }
+
+        // Save observation value
+        function saveObservationValue(partId, charName, obsNum, value) {
+            if (!machinePartsMap[currentMachine][partId].observations) {
+                machinePartsMap[currentMachine][partId].observations = {};
+            }
+            
+            if (!machinePartsMap[currentMachine][partId].observations[charName]) {
+                machinePartsMap[currentMachine][partId].observations[charName] = {};
+            }
+            
+            machinePartsMap[currentMachine][partId].observations[charName][obsNum] = value;
+            saveToLocalStorage();
+        }
+
+        // Save alternate GC number
+        function saveAlternateGC(partId, charName, value) {
+            if (!machinePartsMap[currentMachine][partId].alternateGC) {
+                machinePartsMap[currentMachine][partId].alternateGC = {};
+            }
+            
+            machinePartsMap[currentMachine][partId].alternateGC[charName] = value;
+            saveToLocalStorage();
+        }
+
+        // Load saved observations
+        function loadSavedObservations(partId) {
+            // Load observation values
+            if (machinePartsMap[currentMachine][partId].observations) {
+                const partObservations = machinePartsMap[currentMachine][partId].observations;
+                
+                for (const charName in partObservations) {
+                    for (const obsNum in partObservations[charName]) {
+                        const input = document.querySelector(`.observation-input[data-part-id="${partId}"][data-char="${charName}"][data-obs="${obsNum}"]`);
+                        if (input) {
+                            input.value = partObservations[charName][obsNum];
+                        }
+                    }
+                }
+            }
+            
+            // Load alternate GC values
+            if (machinePartsMap[currentMachine][partId].alternateGC) {
+                const partAlternateGC = machinePartsMap[currentMachine][partId].alternateGC;
+                
+                for (const charName in partAlternateGC) {
+                    const input = document.querySelector(`.alternate-gc-input[data-part-id="${partId}"][data-char="${charName}"]`);
+                    if (input) {
+                        input.value = partAlternateGC[charName];
+                    }
+                }
+            }
+        }
+
+        // Show loading spinner
+        function showLoading(show) {
+            loadingSpinner.style.display = show ? 'block' : 'none';
+        }
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
