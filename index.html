@@ -1332,74 +1332,80 @@
 
         // Fill a specific observation column
         function fillObservation(partId, obsNum) {
-            const part = partsDatabase.find(p => p.id === partId);
-            
-            if (!part) return;
-            
-            const inputs = document.querySelectorAll(`.observation-input[data-part-id="${partId}"][data-obs="${obsNum}"]`);
-            
-            inputs.forEach(input => {
-                // Skip if already has a value (preserve manual entries)
-                if (input.value.trim() !== '') return;
-                
-                const charName = input.dataset.char;
-                const characteristic = part.characteristics.find(c => c.name === charName);
-                
-                if (!characteristic) return;
-                
-                const spec = characteristic.specification;
-                let value = '';
-                
-                // Use tolerance values if available
-                if (characteristic.tolerance) {
-                    const upper = characteristic.tolerance.upper;
-                    const lower = characteristic.tolerance.lower;
-                    const step = characteristic.tolerance.step || 0.1;
-                    
-                    // Calculate the number of possible steps
-                    const totalSteps = Math.floor((upper + lower) / step);
-                    
-                    // Generate a random step
-                    const randomStep = Math.floor(Math.random() * (totalSteps + 1));
-                    
-                    // Calculate the value within tolerance range
-                    const toleranceValue = (randomStep * step - lower).toFixed(3);
-                    
-                    // Format the value with + or - sign
-                    if (toleranceValue >= 0) {
-                        value = `+${toleranceValue}`;
-                    } else {
-                        value = toleranceValue; // already has - sign
-                    }
-                } 
-                // Fallback to previous logic if no tolerance specified
-                else if (spec.includes('±')) {
-                    const parts = spec.split('±');
-                    const tolerance = parseFloat(parts[1].split(' ')[0]);
-                    const randomValue = (Math.random() * 2 - 1) * tolerance;
-                    value = randomValue >= 0 ? `+${randomValue.toFixed(3)}` : randomValue.toFixed(3);
-                } else if (spec.includes('+') && spec.includes('-')) {
-                    const parts = spec.split(/[ +-]/);
-                    const upper = parseFloat(parts[2]);
-                    const lower = parseFloat(parts[3]);
-                    const randomValue = Math.random() * (upper + lower) - lower;
-                    value = randomValue >= 0 ? `+${randomValue.toFixed(3)}` : randomValue.toFixed(3);
-                } else if (spec.includes('max')) {
-                    const maxVal = parseFloat(spec.split('max')[0]);
-                    const randomValue = Math.random() * maxVal * 0.8;
-                    value = randomValue.toFixed(3);
-                } else if (spec.includes('-')) {
-                    const range = spec.split('-').map(parseFloat);
-                    const randomValue = range[0] + Math.random() * (range[1] - range[0]);
-                    value = randomValue.toFixed(1);
-                } else {
-                    value = 'OK'; // Fallback for non-numeric specs
-                }
-                
-                input.value = value;
-                saveObservationValue(partId, charName, obsNum, value);
-            });
+    const part = partsDatabase.find(p => p.id === partId);
+    if (!part) return;
+
+    const inputs = document.querySelectorAll(`.observation-input[data-part-id="${partId}"][data-obs="${obsNum}"]`);
+
+    inputs.forEach(input => {
+        if (input.value.trim() !== '') return;
+
+        const charName = input.dataset.char;
+        const characteristic = part.characteristics.find(c => c.name === charName);
+        if (!characteristic) return;
+
+        let value = '';
+        const spec = characteristic.specification;
+
+        if (characteristic.tolerance) {
+            const { upper, lower, step } = characteristic.tolerance;
+
+            // Determine the actual start and end points
+            const start = Math.min(lower, upper);
+            const end = Math.max(lower, upper);
+
+            const isDescending = lower > upper;
+
+            // Create a list of valid values from lower to upper based on step
+            const values = [];
+            for (
+                let v = start;
+                v <= end + 1e-8;
+                v += step
+            ) {
+                values.push(parseFloat(v.toFixed(3)));
+            }
+
+            // If lower > upper, reverse the list
+            if (isDescending) values.reverse();
+
+            const randomValue = values[Math.floor(Math.random() * values.length)];
+
+            // Format with + sign if positive and not already negative
+            value = randomValue >= 0 ? `+${randomValue.toFixed(3)}` : randomValue.toFixed(3);
+        } 
+        else if (spec.includes('±')) {
+            const parts = spec.split('±');
+            const tolerance = parseFloat(parts[1].split(' ')[0]);
+            const randomValue = (Math.random() * 2 - 1) * tolerance;
+            value = randomValue >= 0 ? `+${randomValue.toFixed(3)}` : randomValue.toFixed(3);
+        } 
+        else if (spec.includes('+') && spec.includes('-')) {
+            const parts = spec.match(/([\d.]+)/g);
+            const base = parseFloat(parts[0]);
+            const upper = parseFloat(parts[1]);
+            const lower = parseFloat(parts[2]);
+            const randomValue = base + (Math.random() * (upper + lower) - lower);
+            value = randomValue.toFixed(3);
+        } 
+        else if (spec.includes('max')) {
+            const maxVal = parseFloat(spec.split('max')[0]);
+            const randomValue = Math.random() * maxVal * 0.8;
+            value = randomValue.toFixed(3);
+        } 
+        else if (spec.includes('-')) {
+            const range = spec.split('-').map(parseFloat);
+            const randomValue = range[0] + Math.random() * (range[1] - range[0]);
+            value = randomValue.toFixed(1);
+        } 
+        else {
+            value = 'OK';
         }
+
+        input.value = value;
+        saveObservationValue(partId, charName, obsNum, value);
+    });
+}
 
         // Clear a specific observation column
         function clearObservation(partId, obsNum) {
