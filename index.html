@@ -586,48 +586,105 @@
     <script>
         // Extended sample data for parts with tolerance values
         const partsDatabase = [
-            {
-                id: 'p001',
-                name: 'Hydraulic Pump Assembly',
-                note: 'High-pressure pump for main hydraulic system. Requires regular lubrication.',
-                machineCompatibility: ['PMT-A', 'PMT-B', 'PMT-C'],
+            {//2nd/6th Speed Gear Mainshaft G1150
+                id: 'G0001',
+                name: '2nd/6th Speed Gear Mainshaft G1150',
+                note: '',
+                machineCompatibility: ['PMT-A', 'PMT-B', 'PMT-C', 'PMT-D', 'PMT-E', 'OD-D', 'OD-E', 'OD-F', 'OD-G', 'OD-I', 'OD-K', 'LMW-Q', 'LMW-R', 'LMW-S', 'LMW-T', 'LMW-U', 'LMW-V', 'LMW-W'],
                 characteristics: [
                     {
-                        name: 'Flow Rate',
-                        specification: '46.5 (+0.025/+0.009)',
-                        measurement: 'Flow meter at outlet',
-                        gcNo: 'GC-101',
+                        name: 'Bore Diameter',
+                        specification: 'Ø 80.0 +0.016',
+                        measurement: 'Bore Dial Gauge & Ring Master',
+                        gcNo: '6053',
                         tolerance: {
-                            upper: 0.022,
-                            lower: 0.015,
+                            upper: 0.005,
+                            lower: 0.014,
                             step: 0.001
                         }
                     },
                     {
-                        name: 'Pressure Rating',
-                        specification: '200 +10 -0 bar',
-                        measurement: 'Pressure gauge at test port',
+                        name: 'Boss Height',
+                        specification: '42.5 -0.05',
+                        measurement: 'Hight Master',
+                        gcNo: '5448',
+                        tolerance: {
+                            upper: -0.010,
+                            lower: -0.035,
+                            step: 0.001
+                        }
+                    },
+                    {
+                        name: 'Depth',
+                        specification: '3.9 ±0.1',
+                        measurement: 'Hight Gauge',
                         gcNo: '',
                         tolerance: {
-                            text: '✓'
+                            upper: 0.05,
+                            lower: -0.02,
+                            step: 0.01
                         }
                     },
                     {
-                        name: 'Surface Finish',
-                        specification: '0.2 -0.4',
-                        measurement: 'Surface Tester',
-                        gcNo: 'GC-202',
+                        name: 'Distance',
+                        specification: '10.95 ±0.03',
+                        measurement: 'Hight Gauge',
+                        gcNo: '',
                         tolerance: {
-                            upper: 0.395,
-                            lower: 0.240,
+                            upper: 0.03,
+                            lower: -0.03,
+                            step: 0.01
+                        }
+                    },
+                    {
+                        name: 'Distance',
+                        specification: '7.13 ±0.05',
+                        measurement: 'Hight Gauge',
+                        gcNo: '',
+                        tolerance: {
+                            upper: 0.04,
+                            lower: -0.04,
+                            step: 0.01
+                        }
+                    },
+                    {
+                        name: 'S/F on Bore',
+                        specification: '0.35',
+                        measurement: 'Surface Tester',
+                        gcNo: '',
+                        tolerance: {
+                            upper: 0.330,
+                            lower: 0.100,
                             step: 0.001
                         }
                     },
                     {
-                        name: 'Temperature Range',
-                        specification: '20-80 °C',
-                        measurement: 'Infrared thermometer',
-                        gcNo: 'GC-103',
+                        name: 'S/F on Grd. Face',
+                        specification: '0.8',
+                        measurement: 'Surface Tester',
+                        gcNo: '',
+                        tolerance: {
+                            upper: 0.400,
+                            lower: 0.270,
+                            step: 0.001
+                        }
+                    },
+                    {
+                        name: 'R/O on Rest Face',
+                        specification: '0.015',
+                        measurement: 'Spl. Fixture & Dial',
+                        gcNo: '',
+                        tolerance: {
+                            upper: 0.015,
+                            lower: 0.012,
+                            step: 0.001
+                        }
+                    },
+                    {
+                        name: 'No Visual Defect',
+                        specification: 'As per CP & Defect Matrix',
+                        measurement: 'Visual',
+                        gcNo: '',
                         tolerance: {
                             text: 'OK'
                         }
