@@ -453,7 +453,7 @@
             font-weight: bold;
         }
         .status-development {
-            color: #ffc107;
+            color: #dca500;
             font-weight: bold;
         }
         .check-tick {
@@ -518,7 +518,10 @@
             <p> </p>
         </header>
 
-        <button class="btn" id="summary-btn" style="margin-bottom: 20px;">View Machine Summary</button>
+        <div class="btn-group" style="margin-bottom: 20px;">
+            <button class="btn btn-danger" id="remove-all-btn">Remove All Parts</button>
+            <button class="btn" id="summary-btn">View Machine Summary</button>
+        </div>
 
         <div class="card">
             <h2 class="card-title">Machine & Part Selection</h2>
@@ -604,11 +607,20 @@
                         name: 'Pressure Rating',
                         specification: '200 +10 -0 bar',
                         measurement: 'Pressure gauge at test port',
-                        gcNo: 'GC-102',
+                        gcNo: '',
                         tolerance: {
-                            upper: 10,
-                            lower: 0,
-                            step: 0.5
+                            text: '✓'
+                        }
+                    },
+                    {
+                        name: 'Surface Finish',
+                        specification: '0.2 -0.4',
+                        measurement: 'Surface Tester',
+                        gcNo: 'GC-202',
+                        tolerance: {
+                            upper: 0.395,
+                            lower: 0.240,
+                            step: 0.001
                         }
                     },
                     {
@@ -617,9 +629,7 @@
                         measurement: 'Infrared thermometer',
                         gcNo: 'GC-103',
                         tolerance: {
-                            upper: 5,
-                            lower: 5,
-                            step: 1
+                            text: 'OK'
                         }
                     }
                 ]
@@ -797,6 +807,7 @@
         const selectedPartsContainer = document.getElementById('selected-parts-container');
         const loadingSpinner = document.getElementById('loading-spinner');
         const summaryBtn = document.getElementById('summary-btn');
+        const removeAllBtn = document.getElementById('remove-all-btn');
         const summaryModal = document.getElementById('summary-modal');
         const summaryClose = document.getElementById('summary-close');
         const summaryList = document.getElementById('summary-list');
@@ -813,6 +824,7 @@
             partSearch.addEventListener('focus', handleSearchFocus);
             partSearch.addEventListener('input', handlePartSearch);
             summaryBtn.addEventListener('click', showSummary);
+            removeAllBtn.addEventListener('click', removeAllParts);
             summaryClose.addEventListener('click', () => {
                 summaryModal.style.display = 'none';
             });
@@ -830,6 +842,15 @@
                     summaryModal.style.display = 'none';
                 }
             });
+        }
+
+        // Remove all parts from all machines
+        function removeAllParts() {
+            if (confirm('Are you sure you want to remove all observations for all parts across all machines?')) {
+                machinePartsMap = {};
+                selectedPartsContainer.innerHTML = '';
+                saveToLocalStorage();
+            }
         }
 
         // Load data from localStorage
@@ -1331,7 +1352,7 @@
         }
 
         // Fill a specific observation column
-        function fillObservation(partId, obsNum) {
+ function fillObservation(partId, obsNum) {
     const part = partsDatabase.find(p => p.id === partId);
     if (!part) return;
 
@@ -1346,32 +1367,25 @@
 
         let value = '';
         const spec = characteristic.specification;
+        const tol = characteristic.tolerance;
 
-        if (characteristic.tolerance) {
-            const { upper, lower, step } = characteristic.tolerance;
-
-            // Determine the actual start and end points
+        // If text tolerance is defined, use it directly
+        if (tol && typeof tol.text !== 'undefined') {
+            value = String(tol.text); // Always treat text as string (handles ✓, OK, etc.)
+        } 
+        else if (tol && tol.upper !== undefined && tol.lower !== undefined && tol.step !== undefined) {
+            const { upper, lower, step } = tol;
             const start = Math.min(lower, upper);
             const end = Math.max(lower, upper);
-
             const isDescending = lower > upper;
 
-            // Create a list of valid values from lower to upper based on step
             const values = [];
-            for (
-                let v = start;
-                v <= end + 1e-8;
-                v += step
-            ) {
+            for (let v = start; v <= end + 1e-8; v += step) {
                 values.push(parseFloat(v.toFixed(3)));
             }
-
-            // If lower > upper, reverse the list
             if (isDescending) values.reverse();
 
             const randomValue = values[Math.floor(Math.random() * values.length)];
-
-            // Format with + sign if positive and not already negative
             value = randomValue >= 0 ? `+${randomValue.toFixed(3)}` : randomValue.toFixed(3);
         } 
         else if (spec.includes('±')) {
@@ -1394,18 +1408,19 @@
             value = randomValue.toFixed(3);
         } 
         else if (spec.includes('-')) {
-            const range = spec.split('-').map(parseFloat);
+            const range = spec.split('-').map(v => parseFloat(v));
             const randomValue = range[0] + Math.random() * (range[1] - range[0]);
             value = randomValue.toFixed(1);
         } 
         else {
-            value = 'OK';
+            value = 'OK'; // Default fallback
         }
 
         input.value = value;
         saveObservationValue(partId, charName, obsNum, value);
     });
 }
+
 
         // Clear a specific observation column
         function clearObservation(partId, obsNum) {
