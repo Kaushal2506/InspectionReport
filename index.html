@@ -594,7 +594,7 @@
                 characteristics: [
                     {
                         name: 'Bore Diameter',
-                        specification: 'Ø 80.0 +0.016',
+                        specification: 'Ø 80.0 (+0.016)',
                         measurement: 'Bore Dial Gauge & Ring Master',
                         gcNo: '6053',
                         tolerance: {
@@ -604,8 +604,26 @@
                         }
                     },
                     {
+                        name: 'Bore',
+                        specification: '',
+                        measurement: 'Plug Gauge',
+                        gcNo: '',
+                        tolerance: {
+                            text: '✓'
+                        }
+                    },
+                    {
+                        name: 'Cone Diameter',
+                        specification: '',
+                        measurement: 'Job Master',
+                        gcNo: '',
+                        tolerance: {
+                            
+                        }
+                    },
+                    {
                         name: 'Boss Height',
-                        specification: '42.5 -0.05',
+                        specification: '42.5 (-0.05)',
                         measurement: 'Hight Master',
                         gcNo: '5448',
                         tolerance: {
@@ -615,8 +633,17 @@
                         }
                     },
                     {
-                        name: 'Depth',
-                        specification: '3.9 ±0.1',
+                        name: 'Thickness',
+                        specification: '',
+                        measurement: 'Hight Master',
+                        gcNo: '',
+                        tolerance: {
+                            
+                        }
+                    },
+                    {
+                        name: 'Back Face Depth',
+                        specification: '3.9 (±0.1)',
                         measurement: 'Hight Gauge',
                         gcNo: '',
                         tolerance: {
@@ -626,8 +653,17 @@
                         }
                     },
                     {
+                        name: 'C.B. Ring Height',
+                        specification: '',
+                        measurement: 'Hight Gauge',
+                        gcNo: '',
+                        tolerance: {
+                            
+                        }
+                    },
+                    {
                         name: 'Distance',
-                        specification: '10.95 ±0.03',
+                        specification: '10.95 (±0.03)',
                         measurement: 'Hight Gauge',
                         gcNo: '',
                         tolerance: {
@@ -638,7 +674,7 @@
                     },
                     {
                         name: 'Distance',
-                        specification: '7.13 ±0.05',
+                        specification: '7.13 (±0.05)',
                         measurement: 'Hight Gauge',
                         gcNo: '',
                         tolerance: {
@@ -656,6 +692,15 @@
                             upper: 0.330,
                             lower: 0.100,
                             step: 0.001
+                        }
+                    },
+                    {
+                        name: 'S/F on Cone',
+                        specification: '',
+                        measurement: '',
+                        gcNo: '',
+                        tolerance: {
+                           
                         }
                     },
                     {
@@ -691,170 +736,9 @@
                     }
                 ]
             },
-            {
-                id: 'p002',
-                name: 'Spindle Bearing',
-                note: 'Precision bearing for main spindle. Handle with care to avoid contamination.',
-                machineCompatibility: ['PMT-A', 'PMT-D'],
-                characteristics: [
-                    {
-                        name: 'Radial Play',
-                        specification: '0.005 +0.001 -0.0005 mm',
-                        measurement: 'Dial indicator',
-                        gcNo: 'GC-201',
-                        tolerance: {
-                            upper: 0.001,
-                            lower: 0.0005,
-                            step: 0.0001
-                        }
-                    },
-                    {
-                        name: 'Runout',
-                        specification: '0.002 max mm',
-                        measurement: 'Runout gauge',
-                        gcNo: 'GC-202',
-                        tolerance: {
-                            upper: 0.001,
-                            lower: 0,
-                            step: 0.0001
-                        }
-                    },
-                    {
-                        name: 'Vibration Level',
-                        specification: '2.5 max m/s²',
-                        measurement: 'Vibration analyzer',
-                        gcNo: 'GC-203',
-                        tolerance: {
-                            upper: 0.5,
-                            lower: 0,
-                            step: 0.1
-                        }
-                    }
-                ]
-            },
-            {
-                id: 'p003',
-                name: 'Control Panel PCB',
-                note: 'Main control board for machine operations. Static sensitive component.',
-                machineCompatibility: ['PMT-B', 'PMT-C', 'PMT-E'],
-                characteristics: [
-                    {
-                        name: 'Voltage Regulation',
-                        specification: '5.0 ±0.05 V',
-                        measurement: 'Digital multimeter',
-                        gcNo: 'GC-301',
-                        tolerance: {
-                            upper: 0.05,
-                            lower: 0.05,
-                            step: 0.01
-                        }
-                    },
-                    {
-                        name: 'Signal Integrity',
-                        specification: 'Noise < 50mV p-p',
-                        measurement: 'Oscilloscope',
-                        gcNo: 'GC-302',
-                        tolerance: {
-                            upper: 10,
-                            lower: 0,
-                            step: 1
-                        }
-                    },
-                    {
-                        name: 'Temperature Rise',
-                        specification: '15 max °C above ambient',
-                        measurement: 'Thermal camera',
-                        gcNo: 'GC-303',
-                        tolerance: {
-                            upper: 3,
-                            lower: 0,
-                            step: 0.5
-                        }
-                    }
-                ]
-            },
-            {
-                id: 'p004',
-                name: 'Linear Guide Rail',
-                note: 'Precision ground rail for X-axis movement. Keep clean and lubricated.',
-                machineCompatibility: ['PMT-A', 'PMT-C', 'PMT-D', 'PMT-E'],
-                characteristics: [
-                    {
-                        name: 'Flatness',
-                        specification: '0.01/100mm',
-                        measurement: 'Precision level',
-                        gcNo: 'GC-401',
-                        tolerance: {
-                            upper: 0.002,
-                            lower: 0,
-                            step: 0.001
-                        }
-                    },
-                    {
-                        name: 'Parallelism',
-                        specification: '0.015 max mm',
-                        measurement: 'Comparator',
-                        gcNo: 'GC-402',
-                        tolerance: {
-                            upper: 0.003,
-                            lower: 0,
-                            step: 0.001
-                        }
-                    },
-                    {
-                        name: 'Surface Finish',
-                        specification: 'Ra 0.4 max µm',
-                        measurement: 'Surface profilometer',
-                        gcNo: 'GC-403',
-                        tolerance: {
-                            upper: 0.05,
-                            lower: 0,
-                            step: 0.01
-                        }
-                    }
-                ]
-            },
-            {
-                id: 'p005',
-                name: 'Coolant Nozzle',
-                note: 'Adjustable nozzle for cutting fluid delivery. Check for clogs regularly.',
-                machineCompatibility: ['PMT-B', 'PMT-E'],
-                characteristics: [
-                    {
-                        name: 'Flow Pattern',
-                        specification: 'Even 30° cone',
-                        measurement: 'Visual inspection',
-                        gcNo: 'GC-501',
-                        tolerance: {
-                            upper: 5,
-                            lower: 5,
-                            step: 1
-                        }
-                    },
-                    {
-                        name: 'Flow Rate',
-                        specification: '2.0 ±0.2 L/min',
-                        measurement: 'Collect and measure',
-                        gcNo: 'GC-502',
-                        tolerance: {
-                            upper: 0.2,
-                            lower: 0.2,
-                            step: 0.05
-                        }
-                    },
-                    {
-                        name: 'Alignment',
-                        specification: '±1.0 mm to center',
-                        measurement: 'Alignment gauge',
-                        gcNo: 'GC-503',
-                        tolerance: {
-                            upper: 0.2,
-                            lower: 0.2,
-                            step: 0.1
-                        }
-                    }
-                ]
-            }
+            
+                    
+                
         ];
 
         // DOM elements
@@ -1347,32 +1231,6 @@
                 const specParts = char.specification.split(' ');
                 let specDisplay = char.specification;
                 
-                if (specParts.length > 1 && (specParts[1].includes('+') || specParts[1].includes('±'))) {
-                    const base = specParts[0];
-                    const tolerance = specParts[1];
-                    
-                    if (tolerance.includes('±')) {
-                        const val = tolerance.replace('±', '');
-                        specDisplay = `
-                            <div class="tolerance">
-                                <span>${base}</span>
-                                <span class="upper">±${val}</span>
-                            </div>
-                        `;
-                    } else if (tolerance.includes('+') && tolerance.includes('-')) {
-                        const parts = tolerance.split(/[+-]/);
-                        const upper = parts[1];
-                        const lower = parts[2];
-                        specDisplay = `
-                            <div class="tolerance">
-                                <span>${base}</span>
-                                <span class="upper">+${upper}</span>
-                                <span class="lower">-${lower}</span>
-                            </div>
-                        `;
-                    }
-                }
-                
                 // Get saved observation values if they exist
                 const obs1Value = machinePartsMap[currentMachine][part.id].observations?.[char.name]?.['1'] || '';
                 const obs2Value = machinePartsMap[currentMachine][part.id].observations?.[char.name]?.['2'] || '';
@@ -1470,7 +1328,7 @@
             value = randomValue.toFixed(1);
         } 
         else {
-            value = 'OK'; // Default fallback
+            value = ''; // Default fallback
         }
 
         input.value = value;
