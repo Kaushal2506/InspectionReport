@@ -207,23 +207,26 @@
         .table-container {
             width: 100%;
             overflow-x: auto;
-            margin-top: 20px;
+            margin-top: 10px;
             border-radius: var(--border-radius);
             border: 1px solid #ddd;
+            font-size: 10px;
         }
 
         .observation-table {
             width: 100%;
             border-collapse: separate;
             border-spacing: 0;
-            min-width: 900px;
+            min-width: 200px;
+            font-size: 10px;
         }
 
         .observation-table th, .observation-table td {
-            padding: 10px 12px;
+            padding: 1px 3px;
             text-align: left;
             border-bottom: 1px solid #ddd;
             border-right: 1px solid #ddd;
+            font-size: 10px;
         }
 
         .observation-table th {
@@ -232,6 +235,18 @@
             position: sticky;
             top: 0;
             border-right: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .observation-table td:nth-child(1), 
+        .observation-table td:nth-child(2), 
+        .observation-table td:nth-child(3) {
+            padding: 1px 3px; 
+        }
+
+        .observation-table th:nth-child(1),
+        .observation-table th:nth-child(2),
+        .observation-table th:nth-child(3){
+            padding: 1px 3px;
         }
 
         .observation-table th:last-child {
@@ -248,18 +263,18 @@
 
         .observation-table input {
             width: 100%;
-            padding: 6px 8px;
+            padding: 3px 3px;
             border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 14px;
+            border-radius: 4px;
+            font-size: 10px;
         }
 
         .alternate-gc-input {
             width: 100%;
-            padding: 6px 8px;
+            padding: 3px 3px;
             border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 14px;
+            border-radius: 4px;
+            font-size: 10px;
         }
 
         .tolerance {
@@ -347,10 +362,10 @@
 
         .summary-content {
             background: white;
-            padding: 25px;
+            padding: 10px;
             border-radius: var(--border-radius);
             width: 90%;
-            max-width: 800px;
+            max-width: 1000px;
             max-height: 80vh;
             overflow-y: auto;
             position: relative;
@@ -375,63 +390,61 @@
             text-align: center;
         }
 
-        .machine-summary {
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
+        /* New Matrix Style for Summary */
+        .summary-matrix {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
         }
 
-        .machine-summary:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
+        .summary-matrix th, .summary-matrix td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
         }
 
-        .machine-name {
-            font-size: 1.2rem;
-            color: var(--secondary-color);
-            margin-bottom: 10px;
-            font-weight: 600;
+        .summary-matrix th {
+            background-color: var(--primary-color);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 3;
         }
 
-        .part-summary {
-            margin-left: 20px;
-            margin-bottom: 15px;
+        .summary-matrix th.side-header {
+            background-color: var(--secondary-color);
+            text-align: left;
+            position: sticky;
+            left: 0;
+            z-index: 2;
         }
 
-        .part-name {
+        .summary-matrix td.side-cell {
+            background-color: #f8f9fa;
+            text-align: left;
+            position: sticky;
+            left: 0;
+            z-index: 1;
+        }
+
+        .summary-matrix tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .summary-matrix tr:hover {
+            background-color: #e9ecef;
+        }
+
+        .machine-name-cell {
+            font-weight: bold;
+            background-color: #e0e0e0 !important;
+        }
+
+        .part-name-cell {
             font-weight: 500;
-            margin-bottom: 8px;
         }
 
-        .detail-columns {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .detail-column {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .detail-item {
-            margin-bottom: 5px;
-        }
-
-        .detail-label {
-            font-weight: 500;
-            display: inline-block;
-            min-width: 120px;
-        }
-
-        .no-parts {
-            font-style: italic;
-            color: #6c757d;
-            margin-left: 20px;
-        }
-
-        /* Summary Status Colors */
+        /* Status Colors */
         .status-on {
             color: #28a745;
             font-weight: bold;
@@ -440,20 +453,16 @@
             color: #dc3545;
             font-weight: bold;
         }
-        .status-maintenance {
-            color: #dc3545;
-            font-weight: bold;
-        }
         .status-setup {
             color: #007bff;
             font-weight: bold;
         }
         .status-setup-change {
-            color: #007bff;
+            color: #dc3545;
             font-weight: bold;
         }
         .status-development {
-            color: #dca500;
+            color: #dc3545;
             font-weight: bold;
         }
         .check-tick {
@@ -465,6 +474,162 @@
             color: #dc3545;
             font-weight: bold;
             font-size: 1.2em;
+        }
+
+        /* Three-state checkbox styles */
+        .checkbox-cell {
+            text-align: center;
+            width: 15px;
+            height: 15px;
+        }
+        
+        .tri-state-checkbox {
+            display: none;
+        }
+        
+        .tri-state-checkbox + label {
+            cursor: pointer;
+            padding: 4px 1px;
+            border-radius: 3px;
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            text-align: center;
+            line-height: 5px;
+            border: 1px solid #ddd;
+            user-select: none;
+            background-color: white;
+        }
+        
+        .tri-state-checkbox[data-state="checked"] + label {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .tri-state-checkbox[data-state="unchecked"] + label {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .tri-state-checkbox[data-state="checked"] + label::after {
+            content: "✓";
+        }
+        
+        .tri-state-checkbox[data-state="unchecked"] + label::after {
+            content: "✘";
+        }
+        
+        .tri-state-checkbox[data-state="indeterminate"] + label::after {
+            content: "";
+        }
+
+        /* Freeze columns styles */
+        .freeze-toggle-container {
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        /* Toggle switch styles */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+            margin-left: 10px;
+            margin-top: 15px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: var(--primary-color);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        .toggle-label {
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+       /* Freeze first column */
+.freeze-columns .observation-table th:nth-child(1) {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background-color: var(--primary-color);
+}
+.freeze-columns .observation-table td:nth-child(1) {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background-color: white;
+}
+
+/* Freeze second column */
+.freeze-columns .observation-table th:nth-child(2) {
+    position: sticky;
+    left: 89px; /* Adjust based on actual width of column 1 */
+    z-index: 2;
+    background-color: var(--primary-color);
+}
+.freeze-columns .observation-table td:nth-child(2) {
+    position: sticky;
+    left: 89px; /* Same offset */
+    z-index: 2;
+    background-color: white;
+}
+
+
+        .freeze-columns .observation-table tr:hover td:nth-child(1),
+        .freeze-columns .observation-table tr:hover td:nth-child(2) {
+            background-color: #e9ecef;
+        }
+
+        /* Notes section styles */
+        .notes-section {
+            margin-top: 15px;
+        }
+
+        .notes-section label {
+            margin-bottom: 8px;
+        }
+
+        .notes-section textarea {
+            min-height: 80px;
+            resize: vertical;
         }
 
         @media (max-width: 768px) {
@@ -490,6 +655,14 @@
 
             .detail-columns {
                 grid-template-columns: 1fr;
+            }
+            
+            .summary-matrix {
+                font-size: 12px;
+            }
+            
+            .summary-matrix th, .summary-matrix td {
+                padding: 4px;
             }
         }
 
@@ -1036,7 +1209,8 @@
                             upper: 0.023,
                             lower: 0.015,
                             step: 0.001
-                        }
+                        },
+                        showCheckbox: true
                     },
                     {
                         name: 'Bore',
@@ -1056,7 +1230,8 @@
                             upper: 0.006,
                             lower: -0.003,
                             step: 0.001
-                        }
+                        },
+                        showCheckbox: true
                     },
                     {
                         name: 'Boss Height',
@@ -1065,7 +1240,7 @@
                         gcNo: '',
                         tolerance: {
                             
-                        }
+                        },
                     },
                     {
                         name: 'Thickness',
@@ -1076,7 +1251,8 @@
                             upper: 0.015,
                             lower: -0.005,
                             step: 0.001
-                        }
+                        },
+                        showCheckbox: true
                     },
                     {
                         name: 'Back Face Depth',
@@ -1125,7 +1301,8 @@
                             upper: 0.380,
                             lower: 0.240,
                             step: 0.001
-                        }
+                        },
+                        rangeRule: true
                     },
                     {
                         name: 'S/F on Cone',
@@ -1136,7 +1313,8 @@
                             upper: 0.390,
                             lower: 0.240,
                             step: 0.001
-                        }
+                        },
+                        rangeRule: true
                     },
                     {
                         name: 'S/F on Grd. Face',
@@ -1147,7 +1325,8 @@
                             upper: 0.650,
                             lower: 0.480,
                             step: 0.001
-                        }
+                        },
+                        rangeRule: true
                     },
                     {
                         name: 'R/O on Rest Face',
@@ -8214,6 +8393,23 @@
                 ]
             },
             
+            {//0// No Part
+                id: 'G0000',
+                name: 'No Part',
+                note: '',
+                machineCompatibility: ['PMT-A', 'PMT-B', 'PMT-C', 'PMT-D', 'PMT-E', 'OD-D', 'OD-E', 'OD-F', 'OD-G', 'OD-I', 'OD-K', 'LMW-Q', 'LMW-R', 'LMW-S', 'LMW-T', 'LMW-U', 'LMW-V', 'LMW-W'],
+                characteristics: [
+                    {
+                        name: '' ,
+                        specification:'' ,
+                        measurement: '',
+                        gcNo: '',
+                        alternateGcNo: '', 
+                        tolerance: {
+                            
+                        },
+                       
+                    },]}
 
         ];
 
@@ -8231,7 +8427,7 @@
 
         // Current state
         let currentMachine = '';
-        let machinePartsMap = {}; // { machineId: { partId: { observations: {}, alternateGC: {}, checkboxes: {}, dropdowns: {} } } }
+        let machinePartsMap = {}; // { machineId: { partId: { observations: {}, alternateGC: {}, checkboxes: {}, dropdowns: {}, characteristicChecks: {}, notes: '' } } }
 
         // Initialize the app
         function init() {
@@ -8295,7 +8491,7 @@
             localStorage.setItem('machineObservationData', JSON.stringify(data));
         }
 
-        // Show machine summary
+        // Show machine summary in matrix format
         function showSummary() {
             summaryList.innerHTML = '';
             
@@ -8311,74 +8507,93 @@
                 return;
             }
             
+            // Create matrix table
+            const table = document.createElement('table');
+            table.className = 'summary-matrix';
+            
+            // Create table header
+            const thead = document.createElement('thead');
+            const headerRow = document.createElement('tr');
+            
+            // Add empty corner cell
+            const cornerHeader = document.createElement('th');
+            cornerHeader.textContent = 'Machine / Part';
+            headerRow.appendChild(cornerHeader);
+            
+            // Add column headers
+            const columnHeaders = [
+                '1st Piece Report',
+                'Calibration Due',
+                'Reading 1',
+                'Reading 2',
+                'Reading 3',
+                'Reading 4'
+            ];
+            
+            columnHeaders.forEach(headerText => {
+                const th = document.createElement('th');
+                th.textContent = headerText;
+                headerRow.appendChild(th);
+            });
+            
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+            
+            // Create table body
+            const tbody = document.createElement('tbody');
+            
+            // Add rows for each machine and part
             allMachineIds.forEach(machineId => {
-                const machineItem = document.createElement('div');
-                machineItem.className = 'machine-summary';
-                
-                const machineTitle = document.createElement('h3');
-                machineTitle.className = 'machine-name';
-                machineTitle.textContent = `Machine: ${machineId}`;
-                machineItem.appendChild(machineTitle);
+                // Add machine row
+                const machineRow = document.createElement('tr');
+                const machineCell = document.createElement('td');
+                machineCell.className = 'side-header machine-name-cell';
+                machineCell.textContent = machineId;
+                machineCell.colSpan = columnHeaders.length + 1;
+                machineRow.appendChild(machineCell);
+                tbody.appendChild(machineRow);
                 
                 if (!machinePartsMap[machineId] || Object.keys(machinePartsMap[machineId]).length === 0) {
-                    const noParts = document.createElement('p');
-                    noParts.className = 'no-parts';
-                    noParts.textContent = 'No parts selected for this machine';
-                    machineItem.appendChild(noParts);
+                    // No parts for this machine
+                    const noPartsRow = document.createElement('tr');
+                    const noPartsCell = document.createElement('td');
+                    noPartsCell.className = 'side-cell';
+                    noPartsCell.textContent = 'No parts selected';
+                    noPartsCell.colSpan = columnHeaders.length + 1;
+                    noPartsRow.appendChild(noPartsCell);
+                    tbody.appendChild(noPartsRow);
                 } else {
+                    // Add rows for each part in this machine
                     for (const partId in machinePartsMap[machineId]) {
                         const part = partsDatabase.find(p => p.id === partId);
                         if (part) {
-                            const partSummary = document.createElement('div');
-                            partSummary.className = 'part-summary';
+                            const partRow = document.createElement('tr');
                             
-                            const partName = document.createElement('div');
-                            partName.className = 'part-name';
-                            partName.textContent = part.name;
-                            partSummary.appendChild(partName);
+                            // Part name cell
+                            const partNameCell = document.createElement('td');
+                            partNameCell.className = 'side-cell part-name-cell';
+                            partNameCell.textContent = part.name;
+                            partRow.appendChild(partNameCell);
                             
-                            // Create columns container
-                            const columnsContainer = document.createElement('div');
-                            columnsContainer.className = 'detail-columns';
-                            
-                            // Create first column for checklist items
-                            const checklistColumn = document.createElement('div');
-                            checklistColumn.className = 'detail-column';
-                            
-                            const checklistTitle = document.createElement('h4');
-                            checklistTitle.textContent = 'Checklist Items';
-                            checklistColumn.appendChild(checklistTitle);
-                            
-                            const inspectionItem = document.createElement('div');
-                            inspectionItem.className = 'detail-item';
-                            inspectionItem.innerHTML = `
-                                <span class="detail-label">Inspection report:</span>
+                            // 1st Piece Report
+                            const inspectionCell = document.createElement('td');
+                            inspectionCell.innerHTML = `
                                 <span class="${machinePartsMap[machineId][partId].checkboxes.inspectionChecked ? 'check-tick' : 'check-cross'}">
                                     ${machinePartsMap[machineId][partId].checkboxes.inspectionChecked ? '✓' : '✗'}
                                 </span>
                             `;
-                            checklistColumn.appendChild(inspectionItem);
+                            partRow.appendChild(inspectionCell);
                             
-                            const calibrationItem = document.createElement('div');
-                            calibrationItem.className = 'detail-item';
-                            calibrationItem.innerHTML = `
-                                <span class="detail-label">Calibration date:</span>
+                            // Calibration Due
+                            const calibrationCell = document.createElement('td');
+                            calibrationCell.innerHTML = `
                                 <span class="${machinePartsMap[machineId][partId].checkboxes.calibrationChecked ? 'check-tick' : 'check-cross'}">
                                     ${machinePartsMap[machineId][partId].checkboxes.calibrationChecked ? '✓' : '✗'}
                                 </span>
                             `;
-                            checklistColumn.appendChild(calibrationItem);
+                            partRow.appendChild(calibrationCell);
                             
-                            columnsContainer.appendChild(checklistColumn);
-                            
-                            // Create second column for observation dropdowns
-                            const dropdownsColumn = document.createElement('div');
-                            dropdownsColumn.className = 'detail-column';
-                            
-                            const dropdownsTitle = document.createElement('h4');
-                            dropdownsTitle.textContent = 'Observation Status';
-                            dropdownsColumn.appendChild(dropdownsTitle);
-                            
+                            // Observation statuses
                             for (let i = 1; i <= 4; i++) {
                                 const status = machinePartsMap[machineId][partId].dropdowns[`status${i}`];
                                 let statusClass = '';
@@ -8386,27 +8601,22 @@
                                 if (status === 'On') statusClass = 'status-on';
                                 else if (status === 'Off' || status === 'Maintenance') statusClass = 'status-off';
                                 else if (status === 'Setup' || status === 'Setup Change') statusClass = 'status-setup';
-                                else if (status === 'Development Part') statusClass = 'status-development';
+                                else if (status === 'Other Setup') statusClass = 'status-development';
                                 
-                                const dropdownItem = document.createElement('div');
-                                dropdownItem.className = 'detail-item';
-                                dropdownItem.innerHTML = `
-                                    <span class="detail-label">Observation ${i}:</span>
-                                    <span class="${statusClass}">${status}</span>
-                                `;
-                                dropdownsColumn.appendChild(dropdownItem);
+                                const statusCell = document.createElement('td');
+                                statusCell.className = statusClass;
+                                statusCell.textContent = status;
+                                partRow.appendChild(statusCell);
                             }
                             
-                            columnsContainer.appendChild(dropdownsColumn);
-                            partSummary.appendChild(columnsContainer);
-                            machineItem.appendChild(partSummary);
+                            tbody.appendChild(partRow);
                         }
                     }
                 }
-                
-                summaryList.appendChild(machineItem);
             });
             
+            table.appendChild(tbody);
+            summaryList.appendChild(table);
             summaryModal.style.display = 'flex';
         }
 
@@ -8519,8 +8729,18 @@
                         status2: 'NA',
                         status3: 'NA',
                         status4: 'NA'
-                    }
+                    },
+                    characteristicChecks: {}, // New property to store checkbox states for characteristics
+                    notes: '', // Initialize notes property
+                    lastValues: {} // Store last values for range rule
                 };
+                
+                // Initialize characteristic checks for this part
+                part.characteristics.forEach(char => {
+                    if (char.showCheckbox) {
+                        machinePartsMap[currentMachine][partId].characteristicChecks[char.name] = 'indeterminate';
+                    }
+                });
             }
             
             saveToLocalStorage();
@@ -8559,6 +8779,11 @@
                     </div>
                 </div>
 
+                <div class="notes-section">
+                    <label for="notes-${part.id}">Additional Notes</label>
+                    <textarea id="notes-${part.id}" placeholder="Enter any additional notes or remarks...">${machinePartsMap[currentMachine][part.id].notes || ''}</textarea>
+                </div>
+
                 <div class="status-dropdowns">
                     <div class="status-dropdown">
                         <label for="status-1-${part.id}">Observation 1</label>
@@ -8569,7 +8794,7 @@
                             <option value="Maintenance" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'Maintenance' ? 'selected' : ''}>Maintenance</option>
                             <option value="Setup" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'Setup' ? 'selected' : ''}>Setup</option>
                             <option value="Setup Change" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'Setup Change' ? 'selected' : ''}>Setup Change</option>
-                            <option value="Development Part" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'Development Part' ? 'selected' : ''}>Development Part</option>
+                            <option value="Other Setup" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'Other Setup' ? 'selected' : ''}>Other Setup</option>
                         </select>
                     </div>
                     <div class="status-dropdown">
@@ -8581,7 +8806,7 @@
                             <option value="Maintenance" ${machinePartsMap[currentMachine][part.id].dropdowns.status2 === 'Maintenance' ? 'selected' : ''}>Maintenance</option>
                             <option value="Setup" ${machinePartsMap[currentMachine][part.id].dropdowns.status2 === 'Setup' ? 'selected' : ''}>Setup</option>
                             <option value="Setup Change" ${machinePartsMap[currentMachine][part.id].dropdowns.status2 === 'Setup Change' ? 'selected' : ''}>Setup Change</option>
-                            <option value="Development Part" ${machinePartsMap[currentMachine][part.id].dropdowns.status2 === 'Development Part' ? 'selected' : ''}>Development Part</option>
+                            <option value="Other Setup" ${machinePartsMap[currentMachine][part.id].dropdowns.status2 === 'Other Setup' ? 'selected' : ''}>Other Setup</option>
                         </select>
                     </div>
                     <div class="status-dropdown">
@@ -8593,7 +8818,7 @@
                             <option value="Maintenance" ${machinePartsMap[currentMachine][part.id].dropdowns.status3 === 'Maintenance' ? 'selected' : ''}>Maintenance</option>
                             <option value="Setup" ${machinePartsMap[currentMachine][part.id].dropdowns.status3 === 'Setup' ? 'selected' : ''}>Setup</option>
                             <option value="Setup Change" ${machinePartsMap[currentMachine][part.id].dropdowns.status3 === 'Setup Change' ? 'selected' : ''}>Setup Change</option>
-                            <option value="Development Part" ${machinePartsMap[currentMachine][part.id].dropdowns.status3 === 'Development Part' ? 'selected' : ''}>Development Part</option>
+                            <option value="Other Setup" ${machinePartsMap[currentMachine][part.id].dropdowns.status3 === 'Other Setup' ? 'selected' : ''}>Other Setup</option>
                         </select>
                     </div>
                     <div class="status-dropdown">
@@ -8605,24 +8830,34 @@
                             <option value="Maintenance" ${machinePartsMap[currentMachine][part.id].dropdowns.status4 === 'Maintenance' ? 'selected' : ''}>Maintenance</option>
                             <option value="Setup" ${machinePartsMap[currentMachine][part.id].dropdowns.status4 === 'Setup' ? 'selected' : ''}>Setup</option>
                             <option value="Setup Change" ${machinePartsMap[currentMachine][part.id].dropdowns.status4 === 'Setup Change' ? 'selected' : ''}>Setup Change</option>
-                            <option value="Development Part" ${machinePartsMap[currentMachine][part.id].dropdowns.status4 === 'Development Part' ? 'selected' : ''}>Development Part</option>
+                            <option value="Other Setup" ${machinePartsMap[currentMachine][part.id].dropdowns.status4 === 'Other Setup' ? 'selected' : ''}>Other Setup</option>
                         </select>
                     </div>
                 </div>
 
+                <div class="freeze-toggle-container">
+    <span class="toggle-label">Freeze First Two Columns:</span>
+    <label class="toggle-switch">
+        <input type="checkbox" id="freeze-toggle-${part.id}">
+        <span class="toggle-slider"></span>
+    </label>
+</div>
+
                 <div class="table-container">
-                    <table class="observation-table">
+                    
+                    <table class="observation-table" id="observation-table-${part.id}">
                         <thead>
                             <tr>
                                 <th>Characteristics</th>
                                 <th>Specifications</th>
                                 <th>Measurement Techniques</th>
                                 <th>GC No.</th>
+                                <th>tick</th>
                                 <th>Alternate GC No.</th>
-                                <th>Observation 1</th>
-                                <th>Observation 2</th>
-                                <th>Observation 3</th>
-                                <th>Observation 4</th>
+                                <th>Reading 1</th>
+                                <th>Reading 2 </th>
+                                <th>Reading 3</th>
+                                <th>Reading 4</th>
                             </tr>
                         </thead>
                         <tbody class="observation-body" data-part-id="${part.id}">
@@ -8665,6 +8900,12 @@
                 saveToLocalStorage();
             });
             
+            // Add listener for notes
+            partCard.querySelector(`#notes-${part.id}`).addEventListener('change', (e) => {
+                machinePartsMap[currentMachine][part.id].notes = e.target.value;
+                saveToLocalStorage();
+            });
+            
             // Add listeners for dropdowns
             for (let i = 1; i <= 4; i++) {
                 partCard.querySelector(`#status-${i}-${part.id}`).addEventListener('change', (e) => {
@@ -8696,6 +8937,40 @@
                 });
             });
             
+            // Add listeners for characteristic checkboxes
+            partCard.querySelectorAll('.tri-state-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('click', (e) => {
+                    const charName = e.target.dataset.char;
+                    const currentState = e.target.dataset.state;
+                    
+                    // Cycle through the three states
+                    let newState;
+                    if (currentState === 'indeterminate') {
+                        newState = 'checked';
+                    } else if (currentState === 'checked') {
+                        newState = 'unchecked';
+                    } else {
+                        newState = 'indeterminate';
+                    }
+                    
+                    // Update the state
+                    e.target.dataset.state = newState;
+                    machinePartsMap[currentMachine][part.id].characteristicChecks[charName] = newState;
+                    saveToLocalStorage();
+                });
+            });
+            
+            // Add listener for freeze toggle
+            const freezeToggle = partCard.querySelector(`#freeze-toggle-${part.id}`);
+            freezeToggle.addEventListener('change', (e) => {
+                const table = partCard.querySelector(`#observation-table-${part.id}`);
+                if (e.target.checked) {
+                    table.parentElement.classList.add('freeze-columns');
+                } else {
+                    table.parentElement.classList.remove('freeze-columns');
+                }
+            });
+            
             // Load saved observation values
             loadSavedObservations(part.id);
         }
@@ -8713,8 +8988,24 @@
                 const obs3Value = machinePartsMap[currentMachine][part.id].observations?.[char.name]?.['3'] || '';
                 const obs4Value = machinePartsMap[currentMachine][part.id].observations?.[char.name]?.['4'] || '';
                 
-                // Get saved alternate GC value if it exists
-                const alternateGcValue = machinePartsMap[currentMachine][part.id].alternateGC?.[char.name] || '';
+                // Get saved alternate GC value if it exists, otherwise use the part's default
+                const savedAlternateGcValue = machinePartsMap[currentMachine][part.id].alternateGC?.[char.name];
+                const alternateGcValue = savedAlternateGcValue !== undefined ? savedAlternateGcValue : (char.alternateGcNo || '');
+                
+                // Get saved checkbox state if it exists
+                const checkboxState = machinePartsMap[currentMachine][part.id].characteristicChecks?.[char.name] || 'indeterminate';
+                
+                // Only show checkbox if the characteristic has showCheckbox property set to true
+                const checkboxCell = char.showCheckbox 
+                    ? `<td class="checkbox-cell">
+                          <input type="checkbox" class="tri-state-checkbox" 
+                                 data-state="${checkboxState}" 
+                                 data-char="${char.name}" 
+                                 data-part-id="${part.id}" 
+                                 id="check-${part.id}-${char.name}">
+                          <label for="check-${part.id}-${char.name}"></label>
+                       </td>`
+                    : '<td></td>';
                 
                 return `
                     <tr>
@@ -8722,6 +9013,7 @@
                         <td>${specDisplay}</td>
                         <td>${char.measurement}</td>
                         <td>${char.gcNo}</td>
+                        ${checkboxCell}
                         <td><input type="text" class="alternate-gc-input" data-char="${char.name}" data-part-id="${part.id}" value="${alternateGcValue}"></td>
                         <td><input type="text" class="observation-input" data-char="${char.name}" data-obs="1" data-part-id="${part.id}" value="${obs1Value}"></td>
                         <td><input type="text" class="observation-input" data-char="${char.name}" data-obs="2" data-part-id="${part.id}" value="${obs2Value}"></td>
@@ -8742,30 +9034,107 @@
             saveToLocalStorage();
         }
 
-        // Fill a specific observation column
- function fillObservation(partId, obsNum) {
-    const part = partsDatabase.find(p => p.id === partId);
-    if (!part) return;
+        // Fill a specific observation column with enhanced logic
+        function fillObservation(partId, obsNum) {
+            const part = partsDatabase.find(p => p.id === partId);
+            if (!part) return;
 
-    const inputs = document.querySelectorAll(`.observation-input[data-part-id="${partId}"][data-obs="${obsNum}"]`);
+            const inputs = document.querySelectorAll(`.observation-input[data-part-id="${partId}"][data-obs="${obsNum}"]`);
 
-    inputs.forEach(input => {
-        if (input.value.trim() !== '') return;
+            inputs.forEach(input => {
+                if (input.value.trim() !== '') return;
 
-        const charName = input.dataset.char;
-        const characteristic = part.characteristics.find(c => c.name === charName);
-        if (!characteristic) return;
+                const charName = input.dataset.char;
+                const characteristic = part.characteristics.find(c => c.name === charName);
+                if (!characteristic) return;
 
-        let value = '';
-        const spec = characteristic.specification;
-        const tol = characteristic.tolerance;
+                let value = '';
+                const spec = characteristic.specification;
+                const tol = characteristic.tolerance;
+                const hasRangeRule = characteristic.rangeRule;
 
-        // If text tolerance is defined, use it directly
-        if (tol && typeof tol.text !== 'undefined') {
-            value = String(tol.text); // Always treat text as string (handles ✓, OK, etc.)
-        } 
-        else if (tol && tol.upper !== undefined && tol.lower !== undefined && tol.step !== undefined) {
-            const { upper, lower, step } = tol;
+                // If text tolerance is defined, use it directly
+                if (tol && typeof tol.text !== 'undefined') {
+                    value = String(tol.text); // Always treat text as string (handles ✓, OK, etc.)
+                } 
+                else if (tol && tol.upper !== undefined && tol.lower !== undefined && tol.step !== undefined) {
+                    const { upper, lower, step } = tol;
+                    
+                    // Check if we should apply the ±10% range rule
+                    if (hasRangeRule && machinePartsMap[currentMachine][partId].lastValues?.[charName]) {
+                        const lastValue = parseFloat(machinePartsMap[currentMachine][partId].lastValues[charName]);
+                        if (!isNaN(lastValue)) {
+                            // Calculate ±10% range
+                            const minValue = lastValue * 0.9;
+                            const maxValue = lastValue * 1.1;
+                            
+                            // Find the range that fits within both the ±10% and the tolerance limits
+                            const adjustedMin = Math.max(minValue, lower);
+                            const adjustedMax = Math.min(maxValue, upper);
+                            
+                            if (adjustedMin <= adjustedMax) {
+                                // Generate random value within the constrained range
+                                const steps = Math.floor((adjustedMax - adjustedMin) / step) + 1;
+                                const randomStep = Math.floor(Math.random() * steps);
+                                const randomValue = adjustedMin + (randomStep * step);
+                                value = randomValue >= 0 ? `+${randomValue.toFixed(3)}` : randomValue.toFixed(3);
+                            } else {
+                                // If ±10% range doesn't overlap with tolerance, fall back to standard logic
+                                value = generateRandomValueWithinTolerance(upper, lower, step);
+                            }
+                        } else {
+                            // Last value wasn't a number, fall back to standard logic
+                            value = generateRandomValueWithinTolerance(upper, lower, step);
+                        }
+                    } else {
+                        // No range rule or no last value, use standard logic
+                        value = generateRandomValueWithinTolerance(upper, lower, step);
+                    }
+                } 
+                else if (spec.includes('±')) {
+                    const parts = spec.split('±');
+                    const tolerance = parseFloat(parts[1].split(' ')[0]);
+                    const randomValue = (Math.random() * 2 - 1) * tolerance;
+                    value = randomValue >= 0 ? `+${randomValue.toFixed(3)}` : randomValue.toFixed(3);
+                } 
+                else if (spec.includes('+') && spec.includes('-')) {
+                    const parts = spec.match(/([\d.]+)/g);
+                    const base = parseFloat(parts[0]);
+                    const upper = parseFloat(parts[1]);
+                    const lower = parseFloat(parts[2]);
+                    const randomValue = base + (Math.random() * (upper + lower) - lower);
+                    value = randomValue.toFixed(3);
+                } 
+                else if (spec.includes('max')) {
+                    const maxVal = parseFloat(spec.split('max')[0]);
+                    const randomValue = Math.random() * maxVal * 0.8;
+                    value = randomValue.toFixed(3);
+                } 
+                else if (spec.includes('-')) {
+                    const range = spec.split('-').map(v => parseFloat(v));
+                    const randomValue = range[0] + Math.random() * (range[1] - range[0]);
+                    value = randomValue.toFixed(1);
+                } 
+                else {
+                    value = ''; // Default fallback
+                }
+
+                input.value = value;
+                saveObservationValue(partId, charName, obsNum, value);
+                
+                // Store the last value for characteristics with range rule
+                if (hasRangeRule) {
+                    if (!machinePartsMap[currentMachine][partId].lastValues) {
+                        machinePartsMap[currentMachine][partId].lastValues = {};
+                    }
+                    machinePartsMap[currentMachine][partId].lastValues[charName] = value;
+                    saveToLocalStorage();
+                }
+            });
+        }
+
+        // Helper function to generate random value within tolerance range
+        function generateRandomValueWithinTolerance(upper, lower, step) {
             const start = Math.min(lower, upper);
             const end = Math.max(lower, upper);
             const isDescending = lower > upper;
@@ -8777,41 +9146,8 @@
             if (isDescending) values.reverse();
 
             const randomValue = values[Math.floor(Math.random() * values.length)];
-            value = randomValue >= 0 ? `+${randomValue.toFixed(3)}` : randomValue.toFixed(3);
-        } 
-        else if (spec.includes('±')) {
-            const parts = spec.split('±');
-            const tolerance = parseFloat(parts[1].split(' ')[0]);
-            const randomValue = (Math.random() * 2 - 1) * tolerance;
-            value = randomValue >= 0 ? `+${randomValue.toFixed(3)}` : randomValue.toFixed(3);
-        } 
-        else if (spec.includes('+') && spec.includes('-')) {
-            const parts = spec.match(/([\d.]+)/g);
-            const base = parseFloat(parts[0]);
-            const upper = parseFloat(parts[1]);
-            const lower = parseFloat(parts[2]);
-            const randomValue = base + (Math.random() * (upper + lower) - lower);
-            value = randomValue.toFixed(3);
-        } 
-        else if (spec.includes('max')) {
-            const maxVal = parseFloat(spec.split('max')[0]);
-            const randomValue = Math.random() * maxVal * 0.8;
-            value = randomValue.toFixed(3);
-        } 
-        else if (spec.includes('-')) {
-            const range = spec.split('-').map(v => parseFloat(v));
-            const randomValue = range[0] + Math.random() * (range[1] - range[0]);
-            value = randomValue.toFixed(1);
-        } 
-        else {
-            value = ''; // Default fallback
+            return randomValue >= 0 ? `+${randomValue.toFixed(3)}` : randomValue.toFixed(3);
         }
-
-        input.value = value;
-        saveObservationValue(partId, charName, obsNum, value);
-    });
-}
-
 
         // Clear a specific observation column
         function clearObservation(partId, obsNum) {
@@ -8870,6 +9206,18 @@
                     const input = document.querySelector(`.alternate-gc-input[data-part-id="${partId}"][data-char="${charName}"]`);
                     if (input) {
                         input.value = partAlternateGC[charName];
+                    }
+                }
+            }
+            
+            // Load characteristic checkbox values
+            if (machinePartsMap[currentMachine][partId].characteristicChecks) {
+                const partChecks = machinePartsMap[currentMachine][partId].characteristicChecks;
+                
+                for (const charName in partChecks) {
+                    const checkbox = document.querySelector(`.tri-state-checkbox[data-part-id="${partId}"][data-char="${charName}"]`);
+                    if (checkbox) {
+                        checkbox.dataset.state = partChecks[charName];
                     }
                 }
             }
