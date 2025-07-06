@@ -5,6 +5,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Machine Observation Report Tool</title>
     <style>
+        /* Previous CSS remains the same, just adding new styles for the new elements */
+        
+        /* New styles for date and shift controls */
+        .report-controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .control-group label {
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+        
+        /* Styles for summary stats */
+        .summary-stats {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-box {
+            background: #f6f6f6;
+            border-radius: var(--border-radius);
+            padding: 5px 10px;
+            box-shadow: var(--box-shadow);
+            text-align: center;
+            min-width: 50 px;
+        }
+        
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .stat-label {
+            font-size: 0.7rem;
+            color: var(--dark-color);
+        }
+        
+        .stat-box.on {
+            border-bottom: 3px solid #28a745;
+        }
+        
+        .stat-box.off {
+            border-bottom: 3px solid #dc3545;
+        }
+        
+        .stat-box.total {
+            border-bottom: 3px solid var(--primary-color);
+        }
+        
+        /* Rest of the existing CSS remains unchanged */
         :root {
             --primary-color: #4361ee;
             --secondary-color: #3f37c9;
@@ -239,8 +303,15 @@
 
         .observation-table td:nth-child(1), 
         .observation-table td:nth-child(2), 
-        .observation-table td:nth-child(3) {
-            padding: 1px 3px; 
+        .observation-table td:nth-child(3), 
+        .observation-table td:nth-child(4), 
+        .observation-table td:nth-child(5), 
+        .observation-table td:nth-child(6), 
+        .observation-table td:nth-child(7), 
+        .observation-table td:nth-child(8), 
+        .observation-table td:nth-child(9),
+        .observation-table td:nth-child(10){
+            padding: 2px 2px; 
         }
 
         .observation-table th:nth-child(1),
@@ -310,6 +381,7 @@
 
         .part-list {
             max-height: 300px;
+            max-width: 300px;
             overflow-y: auto;
             border: 1px solid #ddd;
             border-radius: var(--border-radius);
@@ -476,7 +548,6 @@
             font-size: 1.2em;
         }
 
-        /* Three-state checkbox styles */
         .checkbox-cell {
             text-align: center;
             width: 15px;
@@ -632,6 +703,175 @@
             resize: vertical;
         }
 
+        /* Observation column background colors */
+        .observation-table td.obs-on {
+            background-color: #d4edda !important; /* Light green */
+        }
+
+        .observation-table td.obs-off {
+            background-color: #f8d7da !important; /* Light red */
+        }
+
+        .observation-table td.obs-setup {
+            background-color: #cce5ff !important; /* Light blue */
+        }
+
+        /* New Machine Selection Grid Styles */
+        .machine-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            margin-bottom: 5px;
+        }
+
+        .machine-box {
+            background-color: white;
+            border: 1px solid var(--primary-color);
+            border-radius: var(--border-radius);
+            padding: 3.75px 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: bold;
+            font-size: 12px;
+            height: 28px;
+            width: 75px;
+            color: var(--primary-color);
+            margin-bottom: 4px;
+        }
+
+        .machine-box:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .machine-box.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--secondary-color);
+        }
+        
+        .value-selector-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
+}
+
+.value-selector-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 700px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.value-selector-header {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.value-selector-title {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #222;
+}
+
+#value-selector-custom-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.value-selector-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.value-item {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    text-align: center;
+    background-color: #f9f9f9;
+    font-weight: 500;
+    font-size: 0.95rem;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease-in-out;
+}
+
+.value-item:hover {
+    background-color: #e6f0ff;
+    border-color: #3399ff;
+    transform: translateY(-2px);
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+
+.page-button {
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.page-button.active {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    border-color: #007bff;
+}
+
+.page-button:hover:not(.active) {
+    background-color: #e9f3ff;
+    border-color: #007bff;
+}
+
+.no-values {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+}
+
+.value-selector-close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.value-selector-close:hover {
+    color: black;
+}
+
+
         @media (max-width: 768px) {
             .status-dropdown {
                 min-width: 100%;
@@ -664,6 +904,12 @@
             .summary-matrix th, .summary-matrix td {
                 padding: 4px;
             }
+
+            /* Adjust machine grid for mobile */
+            .machine-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 2px;
+            }
         }
 
         /* Loading spinner */
@@ -688,7 +934,25 @@
     <div class="container">
         <header>
             <h1>Inprocess Inspection Report</h1>
-            <p> </p>
+            <!-- Date and Shift Selection Controls -->
+            <div class="report-controls">
+                <div class="control-group">
+                    <label for="report-date">Date</label>
+                    <input type="date" id="report-date" class="form-control">
+                </div>
+                <div class="control-group">
+                    <label for="report-shift">Shift</label>
+                    <select id="report-shift" class="form-control">
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="A1/2">A1/2</option>
+                        <option value="B1/2">B1/2</option>
+                        <option value="C1/2">C1/2</option>
+                    </select>
+                </div>
+            </div>
+            
         </header>
 
         <div class="btn-group" style="margin-bottom: 20px;">
@@ -696,37 +960,37 @@
             <button class="btn" id="summary-btn">View Machine Summary</button>
         </div>
 
+        <!-- Machine Selection Grid -->
         <div class="card">
-            <h2 class="card-title">Machine & Part Selection</h2>
-            <div class="form-group">
-                <label for="machine-select">Select Machine</label>
-                <select id="machine-select" class="form-control">
-                    <option value="">-- Select a machine --</option>
-                    <option value="PMT-A">PMT-A</option>
-                    <option value="PMT-B">PMT-B</option>
-                    <option value="PMT-C">PMT-C</option>
-                    <option value="PMT-D">PMT-D</option>
-                    <option value="PMT-E">PMT-E</option>
-                    <option value="OD-D">OD-D</option>
-                    <option value="OD-E">OD-E</option>
-                    <option value="OD-F">OD-F</option>
-                    <option value="OD-G">OD-G</option>
-                    <option value="OD-I">OD-I</option>
-                    <option value="OD-K">OD-K</option>
-                    <option value="LMW-Q">LMW-Q</option>
-                    <option value="LMW-R">LMW-R</option>
-                    <option value="LMW-S">LMW-S</option>
-                    <option value="LMW-T">LMW-T</option>
-                    <option value="LMW-U">LMW-U</option>
-                    <option value="LMW-V">LMW-V</option>
-                    <option value="LMW-W">LMW-W</option>
-                    <option value="SR-D">SR-D</option>
-                    <option value="SR-E">SR-E</option>
-                    <option value="SR-F">SR-F</option>
-                    <option value="GR-B">GR-B</option>
-                </select>
+            <h2 class="card-title">Machine Selection</h2>
+            <div class="machine-grid" id="machine-grid">
+                <div class="machine-box" data-machine="PMT-A">PMT-A</div>
+                <div class="machine-box" data-machine="PMT-B">PMT-B</div>
+                <div class="machine-box" data-machine="PMT-C">PMT-C</div>
+                <div class="machine-box" data-machine="PMT-D">PMT-D</div>
+                <div class="machine-box" data-machine="PMT-E">PMT-E</div>
+                <div class="machine-box" data-machine="OD-D">OD-D</div>
+                <div class="machine-box" data-machine="OD-E">OD-E</div>
+                <div class="machine-box" data-machine="OD-F">OD-F</div>
+                <div class="machine-box" data-machine="OD-G">OD-G</div>
+                <div class="machine-box" data-machine="OD-I">OD-I</div>
+                <div class="machine-box" data-machine="OD-K">OD-K</div>
+                <div class="machine-box" data-machine="LMW-Q">LMW-Q</div>
+                <div class="machine-box" data-machine="LMW-R">LMW-R</div>
+                <div class="machine-box" data-machine="LMW-S">LMW-S</div>
+                <div class="machine-box" data-machine="LMW-T">LMW-T</div>
+                <div class="machine-box" data-machine="LMW-U">LMW-U</div>
+                <div class="machine-box" data-machine="LMW-V">LMW-V</div>
+                <div class="machine-box" data-machine="LMW-W">LMW-W</div>
+                <div class="machine-box" data-machine="SR-D">SR-D</div>
+                <div class="machine-box" data-machine="SR-E">SR-E</div>
+                <div class="machine-box" data-machine="SR-F">SR-F</div>
+                <div class="machine-box" data-machine="GR-B">GR-B</div>
             </div>
+        </div>
 
+        <div class="card">
+            <h2 class="card-title">Part Selection</h2>
             <div class="form-group">
                 <label for="part-search">Search Parts</label>
                 <div class="search-box">
@@ -742,6 +1006,23 @@
             <!-- Selected parts with their tables will appear here -->
         </div>
 
+        <!-- Value Selector Modal -->
+        <div class="value-selector-modal" id="value-selector-modal">
+            <div class="value-selector-content">
+                <span class="value-selector-close" id="value-selector-close">&times;</span>
+                <div class="value-selector-header">
+                    <h3 class="value-selector-title">Select a Value</h3>
+                    <input type="text" id="value-selector-custom-input" placeholder="Or type custom value...">
+                </div>
+                <div class="value-selector-grid" id="value-selector-grid">
+                    <!-- Values will be populated here -->
+                </div>
+                <div class="value-selector-pagination" id="value-selector-pagination">
+                    <!-- Pagination will be populated here -->
+                </div>
+            </div>
+        </div>
+
         <div class="spinner" id="loading-spinner"></div>
     </div>
 
@@ -750,6 +1031,23 @@
         <div class="summary-content">
             <span class="summary-close" id="summary-close">&times;</span>
             <h2 class="summary-title">Machine Summary</h2>
+            
+                        <!-- Machine Status Summary -->
+            <div class="summary-stats" id="summary-stats">
+                <div class="stat-box on">
+                    <div class="stat-value" id="machines-on">0</div>
+                    <div class="stat-label">No. of M/C ON</div>
+                </div>
+                <div class="stat-box off">
+                    <div class="stat-value" id="machines-off">0</div>
+                    <div class="stat-label">No. of M/C OFF</div>
+                </div>
+                <div class="stat-box total">
+                    <div class="stat-value" id="total-machines">0</div>
+                    <div class="stat-label">Total Machines</div>
+                </div>
+            </div>
+            
             <div id="summary-list">
                 <!-- Summary will be populated here -->
             </div>
@@ -770,7 +1068,7 @@
                         specification: 'Ø 80.0 (+0.016)',
                         measurement: 'Bore Dial Gauge & Ring Master',
                         gcNo: '6053',
-                        tolerance: {
+                        tolerance2: {
                             upper: 0.005,
                             lower: 0.014,
                             step: 0.001
@@ -799,7 +1097,7 @@
                         specification: '42.5 (-0.05)',
                         measurement: 'Hight Master',
                         gcNo: '5448',
-                        tolerance: {
+                        tolerance2: {
                             upper: -0.010,
                             lower: -0.035,
                             step: 0.001
@@ -819,7 +1117,7 @@
                         specification: '3.9 (±0.1)',
                         measurement: 'Hight Gauge',
                         gcNo: '',
-                        tolerance: {
+                        tolerance2: {
                             upper: 0.05,
                             lower: -0.02,
                             step: 0.01
@@ -8412,9 +8710,9 @@
                     },]}
 
         ];
-
+                
         // DOM elements
-        const machineSelect = document.getElementById('machine-select');
+        const machineGrid = document.getElementById('machine-grid');
         const partSearch = document.getElementById('part-search');
         const partList = document.getElementById('part-list');
         const selectedPartsContainer = document.getElementById('selected-parts-container');
@@ -8424,22 +8722,81 @@
         const summaryModal = document.getElementById('summary-modal');
         const summaryClose = document.getElementById('summary-close');
         const summaryList = document.getElementById('summary-list');
+        const reportDate = document.getElementById('report-date');
+        const reportShift = document.getElementById('report-shift');
+        const machinesOnElement = document.getElementById('machines-on');
+        const machinesOffElement = document.getElementById('machines-off');
+        const totalMachinesElement = document.getElementById('total-machines');
+        
+        // New elements for value selector
+        const valueSelectorModal = document.getElementById('value-selector-modal');
+        const valueSelectorClose = document.getElementById('value-selector-close');
+        const valueSelectorGrid = document.getElementById('value-selector-grid');
+        const valueSelectorPagination = document.getElementById('value-selector-pagination');
+        const valueSelectorCustomInput = document.getElementById('value-selector-custom-input');
 
         // Current state
         let currentMachine = '';
         let machinePartsMap = {}; // { machineId: { partId: { observations: {}, alternateGC: {}, checkboxes: {}, dropdowns: {}, characteristicChecks: {}, notes: '' } } }
+        
+        // State for value selector
+        let currentValueSelector = {
+            inputElement: null,
+            partId: null,
+            charName: null,
+            obsNum: null,
+            values: [],
+            currentPage: 1,
+            itemsPerPage: 25 // 5 columns x 5 rows
+        };
 
         // Initialize the app
         function init() {
+            // Set default date to today
+            const today = new Date();
+            const dateString = today.toISOString().split('T')[0];
+            reportDate.value = dateString;
+            
             loadFromLocalStorage();
             
-            machineSelect.addEventListener('change', handleMachineSelect);
+            // Add click handlers to machine boxes
+            document.querySelectorAll('.machine-box').forEach(box => {
+                box.addEventListener('click', () => {
+                    // Remove active class from all boxes
+                    document.querySelectorAll('.machine-box').forEach(b => {
+                        b.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked box
+                    box.classList.add('active');
+                    
+                    // Set current machine
+                    currentMachine = box.dataset.machine;
+                    
+                    // Show parts for selected machine
+                    showPartsForMachine(currentMachine);
+                    saveToLocalStorage();
+                    
+                    // Update summary stats
+                    updateSummaryStats();
+                });
+            });
+            
             partSearch.addEventListener('focus', handleSearchFocus);
             partSearch.addEventListener('input', handlePartSearch);
             summaryBtn.addEventListener('click', showSummary);
             removeAllBtn.addEventListener('click', removeAllParts);
             summaryClose.addEventListener('click', () => {
                 summaryModal.style.display = 'none';
+            });
+            
+            // New event listeners for value selector
+            valueSelectorClose.addEventListener('click', closeValueSelector);
+            valueSelectorCustomInput.addEventListener('keydown', handleCustomValueInput);
+            window.addEventListener('click', (e) => {
+                if (e.target === valueSelectorModal) {
+                    closeValueSelector();
+                }
             });
             
             // Close part list when clicking outside
@@ -8455,7 +8812,46 @@
                     summaryModal.style.display = 'none';
                 }
             });
+            
+            // If we have a current machine from localStorage, activate its box
+            if (currentMachine) {
+                const machineBox = document.querySelector(`.machine-box[data-machine="${currentMachine}"]`);
+                if (machineBox) {
+                    machineBox.classList.add('active');
+                }
+            }
+            
+            // Initialize summary stats
+            updateSummaryStats();
         }
+
+        // Update the machine status summary
+        function updateSummaryStats() {
+    // Get all machine IDs from the machine boxes
+    const machineBoxes = document.querySelectorAll('.machine-box');
+    const allMachineIds = Array.from(machineBoxes)
+        .map(box => box.dataset.machine)
+        .filter(value => value !== ''); // Remove any empty values
+
+    const totalMachines = allMachineIds.length;
+
+    // Count machines that are OFF (have part G0000)
+    let machinesOff = 0;
+    allMachineIds.forEach(machineId => {
+        if (machinePartsMap[machineId] && machinePartsMap[machineId]['G0000']) {
+            machinesOff++;
+        }
+    });
+
+    // Machines ON = total - OFF
+    const machinesOn = totalMachines - machinesOff;
+
+    // Update the UI
+    machinesOnElement.textContent = machinesOn;
+    machinesOffElement.textContent = machinesOff;
+    totalMachinesElement.textContent = totalMachines;
+}
+
 
         // Remove all parts from all machines
         function removeAllParts() {
@@ -8463,6 +8859,7 @@
                 machinePartsMap = {};
                 selectedPartsContainer.innerHTML = '';
                 saveToLocalStorage();
+                updateSummaryStats();
             }
         }
 
@@ -8475,9 +8872,14 @@
                     machinePartsMap = data.machinePartsMap;
                 }
                 if (data.currentMachine) {
-                    machineSelect.value = data.currentMachine;
                     currentMachine = data.currentMachine;
                     showPartsForMachine(currentMachine);
+                }
+                if (data.reportDate) {
+                    reportDate.value = data.reportDate;
+                }
+                if (data.reportShift) {
+                    reportShift.value = data.reportShift;
                 }
             }
         }
@@ -8486,7 +8888,9 @@
         function saveToLocalStorage() {
             const data = {
                 currentMachine,
-                machinePartsMap
+                machinePartsMap,
+                reportDate: reportDate.value,
+                reportShift: reportShift.value
             };
             localStorage.setItem('machineObservationData', JSON.stringify(data));
         }
@@ -8495,11 +8899,11 @@
         function showSummary() {
             summaryList.innerHTML = '';
             
-            // Get all machine IDs from the select dropdown
-            const machineOptions = machineSelect.querySelectorAll('option');
-            const allMachineIds = Array.from(machineOptions)
-                .map(option => option.value)
-                .filter(value => value !== ''); // Remove the empty option
+            // Get all machine IDs from the machine boxes
+            const machineBoxes = document.querySelectorAll('.machine-box');
+            const allMachineIds = Array.from(machineBoxes)
+                .map(box => box.dataset.machine)
+                .filter(value => value !== ''); // Remove any empty values
             
             if (allMachineIds.length === 0) {
                 summaryList.innerHTML = '<p>No machines available</p>';
@@ -8620,17 +9024,6 @@
             summaryModal.style.display = 'flex';
         }
 
-        // Handle machine selection
-        function handleMachineSelect(e) {
-            currentMachine = e.target.value;
-            if (currentMachine) {
-                showPartsForMachine(currentMachine);
-                saveToLocalStorage();
-            } else {
-                selectedPartsContainer.innerHTML = '';
-            }
-        }
-
         // Show parts for selected machine
         function showPartsForMachine(machineId) {
             selectedPartsContainer.innerHTML = '';
@@ -8643,6 +9036,9 @@
                     }
                 }
             }
+            
+            // Update summary stats when showing parts
+            updateSummaryStats();
         }
 
         // Handle search focus
@@ -8652,6 +9048,7 @@
                 partList.style.display = 'block';
             } else {
                 partSearch.blur();
+                alert('Please select a machine first');
             }
         }
 
@@ -8752,6 +9149,9 @@
             partSearch.value = '';
             partList.style.display = 'none';
             partList.innerHTML = '';
+            
+            // Update summary stats when adding a new part
+            updateSummaryStats();
         }
 
         // Add part to UI
@@ -8786,48 +9186,76 @@
 
                 <div class="status-dropdowns">
                     <div class="status-dropdown">
-                        <label for="status-1-${part.id}">Observation 1</label>
-                        <select id="status-1-${part.id}">
+                        <label for="status-1-${part.id}">Round 1</label>
+                        <select id="status-1-${part.id}" style="font-weight: bold;"
+                        onchange="
+                            this.style.fontWeight = 'bold';
+                            if (this.value === 'On') this.style.color = 'green';
+                            else if (this.value === 'Off') this.style.color = 'red';
+                            else if (this.value === 'Setup') this.style.color = 'blue';
+                            else if (this.value === 'Setup Change') this.style.color = 'red';
+                            else if (this.value === 'Other Setup') this.style.color = 'red';
+                            else this.style.color = 'black';">
                             <option value="NA" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'NA' ? 'selected' : ''}>NA</option>
                             <option value="On" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'On' ? 'selected' : ''}>On</option>
                             <option value="Off" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'Off' ? 'selected' : ''}>Off</option>
-                            <option value="Maintenance" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'Maintenance' ? 'selected' : ''}>Maintenance</option>
                             <option value="Setup" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'Setup' ? 'selected' : ''}>Setup</option>
                             <option value="Setup Change" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'Setup Change' ? 'selected' : ''}>Setup Change</option>
                             <option value="Other Setup" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'Other Setup' ? 'selected' : ''}>Other Setup</option>
                         </select>
                     </div>
                     <div class="status-dropdown">
-                        <label for="status-2-${part.id}">Observation 2</label>
-                        <select id="status-2-${part.id}">
+                        <label for="status-2-${part.id}">Round 2</label>
+                        <select id="status-2-${part.id}" style="font-weight: bold;"
+                        onchange="
+                            this.style.fontWeight = 'bold';
+                            if (this.value === 'On') this.style.color = 'green';
+                            else if (this.value === 'Off') this.style.color = 'red';
+                            else if (this.value === 'Setup') this.style.color = 'blue';
+                            else if (this.value === 'Setup Change') this.style.color = 'red';
+                            else if (this.value === 'Other Setup') this.style.color = 'red';
+                            else this.style.color = 'black';">    
                             <option value="NA" ${machinePartsMap[currentMachine][part.id].dropdowns.status2 === 'NA' ? 'selected' : ''}>NA</option>
                             <option value="On" ${machinePartsMap[currentMachine][part.id].dropdowns.status2 === 'On' ? 'selected' : ''}>On</option>
                             <option value="Off" ${machinePartsMap[currentMachine][part.id].dropdowns.status2 === 'Off' ? 'selected' : ''}>Off</option>
-                            <option value="Maintenance" ${machinePartsMap[currentMachine][part.id].dropdowns.status2 === 'Maintenance' ? 'selected' : ''}>Maintenance</option>
                             <option value="Setup" ${machinePartsMap[currentMachine][part.id].dropdowns.status2 === 'Setup' ? 'selected' : ''}>Setup</option>
                             <option value="Setup Change" ${machinePartsMap[currentMachine][part.id].dropdowns.status2 === 'Setup Change' ? 'selected' : ''}>Setup Change</option>
                             <option value="Other Setup" ${machinePartsMap[currentMachine][part.id].dropdowns.status2 === 'Other Setup' ? 'selected' : ''}>Other Setup</option>
                         </select>
                     </div>
                     <div class="status-dropdown">
-                        <label for="status-3-${part.id}">Observation 3</label>
-                        <select id="status-3-${part.id}">
+                        <label for="status-3-${part.id}">Round 3</label>
+                        <select id="status-3-${part.id}"style="font-weight: bold;"
+                        onchange="
+                            this.style.fontWeight = 'bold';
+                            if (this.value === 'On') this.style.color = 'green';
+                            else if (this.value === 'Off') this.style.color = 'red';
+                            else if (this.value === 'Setup') this.style.color = 'blue';
+                            else if (this.value === 'Setup Change') this.style.color = 'red';
+                            else if (this.value === 'Other Setup') this.style.color = 'red';
+                            else this.style.color = 'black';">    
                             <option value="NA" ${machinePartsMap[currentMachine][part.id].dropdowns.status3 === 'NA' ? 'selected' : ''}>NA</option>
                             <option value="On" ${machinePartsMap[currentMachine][part.id].dropdowns.status3 === 'On' ? 'selected' : ''}>On</option>
                             <option value="Off" ${machinePartsMap[currentMachine][part.id].dropdowns.status3 === 'Off' ? 'selected' : ''}>Off</option>
-                            <option value="Maintenance" ${machinePartsMap[currentMachine][part.id].dropdowns.status3 === 'Maintenance' ? 'selected' : ''}>Maintenance</option>
                             <option value="Setup" ${machinePartsMap[currentMachine][part.id].dropdowns.status3 === 'Setup' ? 'selected' : ''}>Setup</option>
                             <option value="Setup Change" ${machinePartsMap[currentMachine][part.id].dropdowns.status3 === 'Setup Change' ? 'selected' : ''}>Setup Change</option>
                             <option value="Other Setup" ${machinePartsMap[currentMachine][part.id].dropdowns.status3 === 'Other Setup' ? 'selected' : ''}>Other Setup</option>
                         </select>
                     </div>
                     <div class="status-dropdown">
-                        <label for="status-4-${part.id}">Observation 4</label>
-                        <select id="status-4-${part.id}">
+                        <label for="status-4-${part.id}">Round 4</label>
+                        <select id="status-4-${part.id}"style="font-weight: bold;"
+                        onchange="
+                            this.style.fontWeight = 'bold';
+                            if (this.value === 'On') this.style.color = 'green';
+                            else if (this.value === 'Off') this.style.color = 'red';
+                            else if (this.value === 'Setup') this.style.color = 'blue';
+                            else if (this.value === 'Setup Change') this.style.color = 'red';
+                            else if (this.value === 'Other Setup') this.style.color = 'red';
+                            else this.style.color = 'black';">    
                             <option value="NA" ${machinePartsMap[currentMachine][part.id].dropdowns.status4 === 'NA' ? 'selected' : ''}>NA</option>
                             <option value="On" ${machinePartsMap[currentMachine][part.id].dropdowns.status4 === 'On' ? 'selected' : ''}>On</option>
                             <option value="Off" ${machinePartsMap[currentMachine][part.id].dropdowns.status4 === 'Off' ? 'selected' : ''}>Off</option>
-                            <option value="Maintenance" ${machinePartsMap[currentMachine][part.id].dropdowns.status4 === 'Maintenance' ? 'selected' : ''}>Maintenance</option>
                             <option value="Setup" ${machinePartsMap[currentMachine][part.id].dropdowns.status4 === 'Setup' ? 'selected' : ''}>Setup</option>
                             <option value="Setup Change" ${machinePartsMap[currentMachine][part.id].dropdowns.status4 === 'Setup Change' ? 'selected' : ''}>Setup Change</option>
                             <option value="Other Setup" ${machinePartsMap[currentMachine][part.id].dropdowns.status4 === 'Other Setup' ? 'selected' : ''}>Other Setup</option>
@@ -8906,16 +9334,22 @@
                 saveToLocalStorage();
             });
             
-            // Add listeners for dropdowns
+            // Add listeners for dropdowns and update observation column colors
             for (let i = 1; i <= 4; i++) {
-                partCard.querySelector(`#status-${i}-${part.id}`).addEventListener('change', (e) => {
+                const dropdown = partCard.querySelector(`#status-${i}-${part.id}`);
+                dropdown.addEventListener('change', (e) => {
                     machinePartsMap[currentMachine][part.id].dropdowns[`status${i}`] = e.target.value;
                     saveToLocalStorage();
+                    updateObservationColumnColors(part.id);
                 });
             }
             
             // Add input change listeners for observation fields
             partCard.querySelectorAll('.observation-input').forEach(input => {
+                input.addEventListener('click', (e) => {
+                    showValueSelector(e.target, part.id, input.dataset.char, input.dataset.obs);
+                });
+                
                 input.addEventListener('change', (e) => {
                     saveObservationValue(
                         part.id, 
@@ -8973,6 +9407,51 @@
             
             // Load saved observation values
             loadSavedObservations(part.id);
+            
+            // Update observation column colors based on dropdown selections
+            updateObservationColumnColors(part.id);
+        }
+
+        // Update observation column colors based on dropdown selections
+        function updateObservationColumnColors(partId) {
+            const partCard = document.querySelector(`.part-info[data-part-id="${partId}"]`);
+            if (!partCard) return;
+            
+            // Get all observation columns (7th to 10th columns)
+            const observationColumns = [
+                { colIndex: 7, dropdownId: `status-1-${partId}` },
+                { colIndex: 8, dropdownId: `status-2-${partId}` },
+                { colIndex: 9, dropdownId: `status-3-${partId}` },
+                { colIndex: 10, dropdownId: `status-4-${partId}` }
+            ];
+            
+            observationColumns.forEach(({ colIndex, dropdownId }) => {
+                const dropdown = partCard.querySelector(`#${dropdownId}`);
+                if (!dropdown) return;
+                
+                const selectedValue = dropdown.value;
+                const table = partCard.querySelector('.observation-table');
+                if (!table) return;
+                
+                // Get all cells in this column (skip header row)
+                const rows = table.querySelectorAll('tr');
+                for (let i = 1; i < rows.length; i++) {
+                    const cells = rows[i].cells;
+                    if (cells.length > colIndex) {
+                        // Remove all existing color classes
+                        cells[colIndex - 1].classList.remove('obs-on', 'obs-off', 'obs-setup');
+                        
+                        // Add appropriate color class based on dropdown value
+                        if (selectedValue === 'On') {
+                            cells[colIndex - 1].classList.add('obs-on');
+                        } else if (selectedValue === 'Off' || selectedValue === 'Setup Change' || selectedValue === 'Other Setup' || selectedValue === 'Maintenance') {
+                            cells[colIndex - 1].classList.add('obs-off');
+                        } else if (selectedValue === 'Setup') {
+                            cells[colIndex - 1].classList.add('obs-setup');
+                        }
+                    }
+                }
+            });
         }
 
         // Render observation rows
@@ -9032,6 +9511,7 @@
             
             document.querySelector(`.part-info[data-part-id="${partId}"]`).remove();
             saveToLocalStorage();
+            updateSummaryStats();
         }
 
         // Fill a specific observation column with enhanced logic
@@ -9228,8 +9708,157 @@
             loadingSpinner.style.display = show ? 'block' : 'none';
         }
 
-        // Initialize the app when DOM is loaded
-        document.addEventListener('DOMContentLoaded', init);
-    </script>
+        // =============================================
+        // New functions for value selector functionality
+        // =============================================
+
+    function showValueSelector(inputElement, partId, charName, obsNum) {
+        const part = partsDatabase.find(p => p.id === partId);
+        if (!part) return;
+
+        const characteristic = part.characteristics.find(c => c.name === charName);
+        if (!characteristic) return;
+
+        const tolerance = characteristic.tolerance2;
+
+        // Store current context
+        currentValueSelector.inputElement = inputElement;
+        currentValueSelector.partId = partId;
+        currentValueSelector.charName = charName;
+        currentValueSelector.obsNum = obsNum;
+        currentValueSelector.currentPage = 1;
+
+        // Generate values from tolerance2
+        if (tolerance && typeof tolerance.text !== 'undefined') {
+            currentValueSelector.values = [tolerance.text];
+        } else if (
+            tolerance &&
+            tolerance.upper !== undefined &&
+            tolerance.lower !== undefined &&
+            tolerance.step !== undefined
+        ) {
+            const { upper, lower, step } = tolerance;
+            const start = Math.min(lower, upper);
+            const end = Math.max(lower, upper);
+            const isDescending = lower > upper;
+
+            currentValueSelector.values = [];
+            for (let v = start; v <= end + 1e-8; v += step) {
+                const value = parseFloat(v.toFixed(3));
+                currentValueSelector.values.push(value >= 0 ? `+${value.toFixed(3)}` : value.toFixed(3));
+            }
+            if (isDescending) currentValueSelector.values.reverse();
+        } else {
+            currentValueSelector.values = [];
+        }
+
+        // Add common options
+        const commonOptions = ['NA', 'OFF', 'OK', 'PASS', 'FAIL', 'N/A', 'YES', 'NO'];
+        currentValueSelector.values = [...currentValueSelector.values, ...commonOptions];
+
+        // Set pagination limit
+        currentValueSelector.itemsPerPage = currentValueSelector.values.length > 100 ? 100 : currentValueSelector.values.length;
+
+        // Show the modal
+        valueSelectorModal.style.display = 'flex';
+        valueSelectorCustomInput.value = inputElement.value;
+        valueSelectorCustomInput.focus();
+
+        // Render the grid
+        renderValueSelectorGrid();
+    }
+
+    function closeValueSelector() {
+        valueSelectorModal.style.display = 'none';
+    }
+
+    function handleCustomValueInput(e) {
+        if (e.key === 'Enter') {
+            const value = valueSelectorCustomInput.value.trim();
+            if (value !== '') {
+                currentValueSelector.inputElement.value = value;
+                currentValueSelector.inputElement.dispatchEvent(new Event('change'));
+                closeValueSelector();
+            }
+        }
+    }
+
+    function renderValueSelectorGrid() {
+        valueSelectorGrid.innerHTML = '';
+        valueSelectorPagination.innerHTML = '';
+
+        const { values, currentPage, itemsPerPage } = currentValueSelector;
+
+        if (values.length === 0) {
+            valueSelectorGrid.innerHTML = '<div class="no-values">No predefined values available</div>';
+            return;
+        }
+
+        const totalPages = Math.ceil(values.length / itemsPerPage);
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = Math.min(startIndex + itemsPerPage, values.length);
+        const pageValues = values.slice(startIndex, endIndex);
+
+        const grid = document.createElement('div');
+        grid.className = 'value-selector-grid';
+
+        pageValues.forEach(value => {
+            const valueItem = document.createElement('div');
+            valueItem.className = 'value-item';
+            valueItem.textContent = value;
+            valueItem.addEventListener('click', () => {
+                currentValueSelector.inputElement.value = value;
+                currentValueSelector.inputElement.dispatchEvent(new Event('change'));
+                closeValueSelector();
+            });
+            grid.appendChild(valueItem);
+        });
+
+        valueSelectorGrid.appendChild(grid);
+
+        if (totalPages > 1) {
+            const pagination = document.createElement('div');
+            pagination.className = 'pagination';
+
+            if (currentPage > 1) {
+                const prevButton = document.createElement('button');
+                prevButton.className = 'page-button';
+                prevButton.innerHTML = '&laquo;';
+                prevButton.addEventListener('click', () => {
+                    currentValueSelector.currentPage--;
+                    renderValueSelectorGrid();
+                });
+                pagination.appendChild(prevButton);
+            }
+
+            for (let i = 1; i <= totalPages; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.className = `page-button ${i === currentPage ? 'active' : ''}`;
+                pageButton.textContent = i;
+                pageButton.addEventListener('click', () => {
+                    currentValueSelector.currentPage = i;
+                    renderValueSelectorGrid();
+                });
+                pagination.appendChild(pageButton);
+            }
+
+            if (currentPage < totalPages) {
+                const nextButton = document.createElement('button');
+                nextButton.className = 'page-button';
+                nextButton.innerHTML = '&raquo;';
+                nextButton.addEventListener('click', () => {
+                    currentValueSelector.currentPage++;
+                    renderValueSelectorGrid();
+                });
+                pagination.appendChild(nextButton);
+            }
+
+            valueSelectorPagination.appendChild(pagination);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+</script>
+
 </body>
 </html>
