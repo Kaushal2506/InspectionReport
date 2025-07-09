@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Machine Observation Report Tool</title>
-    <style>
+    
+       <style>
      
         .report-controls {
             display: flex;
@@ -97,7 +98,7 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding-bottom:400px ;
+            padding-bottom:500px ;
         }
 
         header {
@@ -329,7 +330,8 @@
         .observation-table th:nth-child(6),
         .observation-table th:nth-child(7),
         .observation-table th:nth-child(8),
-        .observation-table th:nth-child(9){
+        .observation-table th:nth-child(9),
+        .observation-table th:nth-child(10){
             padding: 1px 4px;
         }
 
@@ -491,7 +493,6 @@
         .summary-matrix th {
             background-color: var(--primary-color);
             color: white;
-            position: sticky;
             top: 0;
             z-index: 3;
         }
@@ -499,7 +500,6 @@
         .summary-matrix th.side-header {
             background-color: var(--secondary-color);
             text-align: left;
-            position: sticky;
             left: 0;
             z-index: 2;
         }
@@ -507,10 +507,14 @@
         .summary-matrix td.side-cell {
             background-color: #f8f9fa;
             text-align: left;
-            position: sticky;
             left: 0;
             z-index: 1;
         }
+
+        .summary-matrix th:nth-child(1){
+    width: 120px;
+    min-width: 120px;
+}
 
         .summary-matrix tr:nth-child(even) {
             background-color: #f2f2f2;
@@ -881,11 +885,14 @@
 }
 
 .value-selector-close {
+    position: absolute;
+    top: 0px;
+    right: 35px;
     color: #aaa;
-    float: right;
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
+    z-index: 1000; /* Ensure it's above other content */
 }
 
 .value-selector-close:hover {
@@ -1031,6 +1038,274 @@ input:checked + .summary-toggle-slider:before {
     z-index: 1;
 }
 
+
+
+
+
+
+#surface-finish-modal {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+#surface-finish-modal .summary-content {
+    width: 96%;
+    max-width: 1600px;
+    max-height: 90vh;
+    overflow: auto;
+    padding: 0;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+    border: 1px solid #e5e9f0;
+}
+
+.sfr-header {
+    padding: 24px 32px;
+    border-bottom: 1px solid #f0f2f7;
+    background: linear-gradient(to right, #f8fafd, #ffffff);
+}
+
+.sfr-header h2 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+    color: #1a2b4d;
+    display: flex;
+    align-items: center;
+}
+
+.sfr-header h2:before {
+    content: "";
+    display: inline-block;
+    width: 4px;
+    height: 20px;
+    background: #4361ee;
+    margin-right: 12px;
+    border-radius: 2px;
+}
+
+.sfr-matrix-container {
+    overflow-x: auto;
+    padding: 8px;
+}
+
+.sfr-matrix-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 14px;
+    table-layout: fixed;
+    min-width: 800px;
+}
+
+/* Header specific styling */
+
+.sfr-matrix-table thead tr {
+    background: linear-gradient(to right, #4361ee, #3a56d4);
+}
+
+.sfr-matrix-table th {
+    color: white;
+    padding: 16px 12px;
+    font-weight: 500;
+    text-align: center;
+    position: relative;
+    border-right: 1px solid rgba(255,255,255,0.15);
+    min-width: 120px;
+    width: 120px;
+}
+
+/* First column header */
+.sfr-matrix-table th:first-child {
+    width: 220px;
+    min-width: 220px;
+    max-width: 220px;
+    text-align: left;
+    padding-left: 24px;
+    
+}
+
+/* Body specific styling */
+.sfr-matrix-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #f0f2f7;
+    vertical-align: middle;
+    position: relative;
+    min-width: 120px;
+    width: 120px;
+}
+
+/* First column cells */
+.sfr-matrix-table td:first-child {
+    width: 220px;
+    min-width: 220px;
+    max-width: 220px;
+    text-align: left;
+    padding-left: 24px;
+    font-weight: 500;
+    color: #1a2b4d;
+    
+}
+
+/* Machine row styling */
+.sfr-machine-cell {
+    background: #f8fafd !important;
+    font-weight: 600;
+    color: #1a2b4d;
+    border-bottom: 1px solid #e5e9f0;
+    border-top: 1px solid #e5e9f0;
+}
+
+.sfr-machine-cell:first-child {
+    color: #4361ee;
+    background: #f8fafd !important;
+}
+
+/* Part group styling */
+.sfr-part-group {
+    background: #ffffff;
+}
+
+.sfr-part-cell {
+    background: #ffffff !important;
+    font-weight: 600;
+    color: #2d374d;
+    border-right: 1px solid #f0f2f7 !important;
+    position: relative;
+}
+
+.sfr-part-cell:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 8px;
+    bottom: 8px;
+    width: 3px;
+    background: #4361ee;
+    border-radius: 3px;
+}
+
+/* Characteristic rows */
+.sfr-char-label {
+    font-weight: 500;
+    color: #4a5568;
+    padding-left: 32px !important;
+    text-align: left !important;
+    position: relative;
+}
+
+.sfr-char-label:before {
+    content: "•";
+    position: absolute;
+    left: 18px;
+    color: #a0aec0;
+}
+
+.sfr-spec-cell {
+    font-family: 'Roboto Mono', monospace;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 400;
+}
+
+/* Observation cells */
+.sfr-obs-cell {
+    text-align: center;
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 500;
+    border-right: 1px solid #f0f2f7;
+}
+
+
+/* Show gridlines clearly */
+.sfr-matrix-table {
+    border: 1px solid #d1d5db; /* Slightly darker for visibility */
+    border-collapse: collapse;
+}
+
+.sfr-matrix-table th,
+.sfr-matrix-table td {
+    border: 1px solid #d1d5db; /* All 4 sides of cells */
+}
+
+
+
+/* Hover effects */
+.sfr-matrix-table tbody tr:hover td {
+    background: rgba(67, 97, 238, 0.03) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1600px) {
+    #surface-finish-modal .summary-content {
+        width: 98%;
+    }
+
+    .sfr-matrix-table {
+        font-size: 13.5px;
+    }
+
+    .sfr-matrix-table th,
+    .sfr-matrix-table td {
+        padding: 12px 10px;
+    }
+
+    .sfr-matrix-table th:first-child,
+    .sfr-matrix-table td:first-child {
+        width: 150px;
+        min-width: 150px;
+        max-width: 150px;
+    }
+    
+    /* Example: Set column 3 width to 150px */
+.sfr-matrix-table th:nth-child(1) {
+    width: 420px;
+    min-width: 420px;
+}
+
+
+.sfr-matrix-table th:nth-child(2),
+.sfr-matrix-table th:nth-child(3),
+.sfr-matrix-table th:nth-child(4),
+.sfr-matrix-table th:nth-child(5){
+    width: 120px;
+    min-width: 120px;
+}
+
+    
+}
+
+@media print {
+    #surface-finish-modal .summary-content {
+        width: 100%;
+        max-width: 100%;
+        box-shadow: none;
+        padding: 0;
+        border: none;
+    }
+
+    .sfr-matrix-table {
+        border: 1px solid #e2e8f0;
+    }
+
+    .sfr-matrix-table thead tr {
+        background: #4361ee !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .sfr-machine-cell {
+        background: #f8fafd !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}
+
+
+
+
+
+
         @media (max-width: 768px) {
             .status-dropdown {
                 min-width: 100%;
@@ -1088,7 +1363,10 @@ input:checked + .summary-toggle-slider:before {
             100% { transform: rotate(360deg); }
         }
     </style>
+    
+    
 </head>
+
 <body>
     <div class="container">
         <header>
@@ -1114,11 +1392,13 @@ input:checked + .summary-toggle-slider:before {
             
         </header>
 
-        <div class="btn-group" style="margin-bottom: 20px;">
-            <button class="btn btn-danger" id="remove-all-btn">Remove</button>
-            <button class="btn" id="summary-btn">M/C Summary</button>
-            <button class="btn" id="observation-summary-btn">Obs Summary</button>
-        </div>
+       <div class="btn-group" style="margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 10px;">
+    <button class="btn btn-danger" id="remove-all-btn" style="margin-right: 200px;">Remove All</button>
+    <button class="btn" id="summary-btn">M/C Summary</button>
+    <button class="btn" id="observation-summary-btn">Obs Summary</button>
+    <button class="btn" id="surface-finish-btn">SF Report</button>
+</div>
+
 
         <!-- Machine Selection Grid -->
         <div class="card">
@@ -1222,6 +1502,17 @@ input:checked + .summary-toggle-slider:before {
             </div>
         </div>
 
+        <!-- Surface Finish Report Modal -->
+        <div class="summary-modal" id="surface-finish-modal">
+            <div class="summary-content">
+                <span class="summary-close" id="surface-finish-close">&times;</span>
+                <h2 class="summary-title">Surface Finish Report</h2>
+                <div id="surface-finish-list">
+                    <!-- Surface finish report will be populated here -->
+                </div>
+            </div>
+        </div>
+
         <div class="spinner" id="loading-spinner"></div>
     </div>
 
@@ -1262,13 +1553,17 @@ input:checked + .summary-toggle-slider:before {
         const loadingSpinner = document.getElementById('loading-spinner');
         const summaryBtn = document.getElementById('summary-btn');
         const observationSummaryBtn = document.getElementById('observation-summary-btn');
+        const surfaceFinishBtn = document.getElementById('surface-finish-btn');
         const removeAllBtn = document.getElementById('remove-all-btn');
         const summaryModal = document.getElementById('summary-modal');
         const observationSummaryModal = document.getElementById('observation-summary-modal');
+        const surfaceFinishModal = document.getElementById('surface-finish-modal');
         const summaryClose = document.getElementById('summary-close');
         const observationSummaryClose = document.getElementById('observation-summary-close');
+        const surfaceFinishClose = document.getElementById('surface-finish-close');
         const summaryList = document.getElementById('summary-list');
         const observationSummaryList = document.getElementById('observation-summary-list');
+        const surfaceFinishList = document.getElementById('surface-finish-list');
         const reportDate = document.getElementById('report-date');
         const reportShift = document.getElementById('report-shift');
         const machinesOnElement = document.getElementById('machines-on');
@@ -1333,12 +1628,16 @@ input:checked + .summary-toggle-slider:before {
             partSearch.addEventListener('input', handlePartSearch);
             summaryBtn.addEventListener('click', showSummary);
             observationSummaryBtn.addEventListener('click', showObservationSummary);
+            surfaceFinishBtn.addEventListener('click', showSurfaceFinishReport);
             removeAllBtn.addEventListener('click', removeAllParts);
             summaryClose.addEventListener('click', () => {
                 summaryModal.style.display = 'none';
             });
             observationSummaryClose.addEventListener('click', () => {
                 observationSummaryModal.style.display = 'none';
+            });
+            surfaceFinishClose.addEventListener('click', () => {
+                surfaceFinishModal.style.display = 'none';
             });
             
             // New event listeners for value selector
@@ -1365,6 +1664,9 @@ input:checked + .summary-toggle-slider:before {
                 if (e.target === observationSummaryModal) {
                     observationSummaryModal.style.display = 'none';
                 }
+                if (e.target === surfaceFinishModal) {
+                    surfaceFinishModal.style.display = 'none';
+                }
             });
             
             // If we have a current machine from localStorage, activate its box
@@ -1377,6 +1679,170 @@ input:checked + .summary-toggle-slider:before {
             
             // Initialize summary stats
             updateSummaryStats();
+        }
+
+        // Show Surface Finish Report
+        function showSurfaceFinishReport() {
+            surfaceFinishList.innerHTML = '';
+            
+            // Get all machine IDs from the machine boxes
+            const machineBoxes = document.querySelectorAll('.machine-box');
+            const allMachineIds = Array.from(machineBoxes)
+                .map(box => box.dataset.machine)
+                .filter(value => value !== ''); // Remove any empty values
+            
+            if (allMachineIds.length === 0) {
+                surfaceFinishList.innerHTML = '<p>No machines available</p>';
+                surfaceFinishModal.style.display = 'flex';
+                return;
+            }
+            
+            // Create the table
+            const table = document.createElement('table');
+            table.className = 'sfr-matrix-table';
+            
+            // Create table header
+            const thead = document.createElement('thead');
+            const headerRow = document.createElement('tr');
+            
+            // Add empty corner cell
+            const cornerHeader = document.createElement('th');
+            cornerHeader.textContent = 'Machine / Part';
+            headerRow.appendChild(cornerHeader);
+            
+            // Get all observation labels (rounds 1-4)
+            const observationLabels = ['Round 1', 'Round 2', 'Round 3', 'Round 4'];
+            
+            // Add column headers for each observation round
+            observationLabels.forEach(label => {
+                const th = document.createElement('th');
+                th.textContent = label;
+                headerRow.appendChild(th);
+            });
+            
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+            
+            // Create table body
+            const tbody = document.createElement('tbody');
+            
+            // Add rows for each machine and part
+            allMachineIds.forEach(machineId => {
+                if (!machinePartsMap[machineId] || Object.keys(machinePartsMap[machineId]).length === 0) {
+                    return; // Skip machines with no parts
+                }
+                
+                // Add machine row
+                const machineRow = document.createElement('tr');
+                const machineCell = document.createElement('td');
+                machineCell.className = 'sfr-machine-cell';
+                machineCell.textContent = machineId;
+                machineCell.colSpan = observationLabels.length + 1;
+                machineRow.appendChild(machineCell);
+                tbody.appendChild(machineRow);
+                
+                // Add rows for each part in this machine
+                for (const partId in machinePartsMap[machineId]) {
+                    const part = partsDatabase.find(p => p.id === partId);
+                    if (!part) continue;
+                    
+                    // Find surface finish characteristics for this part
+                    const sfBoreChar = part.characteristics.find(c => c.name === 'S/F on Bore');
+                    const sfConeChar = part.characteristics.find(c => c.name === 'S/F on Cone');
+                    
+                    // Skip parts without any surface finish characteristics
+                    if (!sfBoreChar && !sfConeChar) continue;
+                    
+                    // Create part row group
+                    const partRowGroup = document.createElement('tbody');
+                    partRowGroup.className = 'sfr-part-group';
+                    
+                    // Create first row (S/F on Bore)
+                    const boreRow = document.createElement('tr');
+                    
+                    // Part name cell (merged vertically)
+                    const partNameCell = document.createElement('td');
+                    partNameCell.className = 'sfr-part-cell';
+                    partNameCell.textContent = part.name;
+                    partNameCell.rowSpan = (sfBoreChar && sfConeChar) ? 2 : 1;
+                    boreRow.appendChild(partNameCell);
+                    
+                    // Characteristic label cell
+                    const boreLabelCell = document.createElement('td');
+                    boreLabelCell.className = 'sfr-char-label';
+                    boreLabelCell.textContent = 'S/F on Bore';
+                    boreRow.appendChild(boreLabelCell);
+                    
+                    // Specification cell
+                    const boreSpecCell = document.createElement('td');
+                    boreSpecCell.className = 'sfr-spec-cell';
+                    boreSpecCell.textContent = sfBoreChar ? sfBoreChar.specification || 'NA' : 'NA';
+                    boreRow.appendChild(boreSpecCell);
+                    
+                    // Observation cells for each round
+                    for (let i = 1; i <= 4; i++) {
+                        const obsCell = document.createElement('td');
+                        obsCell.className = 'sfr-obs-cell';
+                        
+                        if (sfBoreChar) {
+                            const status = machinePartsMap[machineId][partId].dropdowns[`status${i}`];
+                            if (status === 'On') {
+                                const obsValue = machinePartsMap[machineId][partId].observations?.['S/F on Bore']?.[i] || '';
+                                obsCell.textContent = obsValue || 'NA';
+                            } else {
+                                obsCell.textContent = status || 'NA';
+                            }
+                        } else {
+                            obsCell.textContent = 'NA';
+                        }
+                        
+                        boreRow.appendChild(obsCell);
+                    }
+                    
+                    partRowGroup.appendChild(boreRow);
+                    
+                    // Create second row (S/F on Cone) if exists
+                    if (sfConeChar) {
+                        const coneRow = document.createElement('tr');
+                        
+                        // Characteristic label cell
+                        const coneLabelCell = document.createElement('td');
+                        coneLabelCell.className = 'sfr-char-label';
+                        coneLabelCell.textContent = 'S/F on Cone';
+                        coneRow.appendChild(coneLabelCell);
+                        
+                        // Specification cell
+                        const coneSpecCell = document.createElement('td');
+                        coneSpecCell.className = 'sfr-spec-cell';
+                        coneSpecCell.textContent = sfConeChar.specification || 'NA';
+                        coneRow.appendChild(coneSpecCell);
+                        
+                        // Observation cells for each round
+                        for (let i = 1; i <= 4; i++) {
+                            const obsCell = document.createElement('td');
+                            obsCell.className = 'sfr-obs-cell';
+                            
+                            const status = machinePartsMap[machineId][partId].dropdowns[`status${i}`];
+                            if (status === 'On') {
+                                const obsValue = machinePartsMap[machineId][partId].observations?.['S/F on Cone']?.[i] || '';
+                                obsCell.textContent = obsValue || 'NA';
+                            } else {
+                                obsCell.textContent = status || 'NA';
+                            }
+                            
+                            coneRow.appendChild(obsCell);
+                        }
+                        
+                        partRowGroup.appendChild(coneRow);
+                    }
+                    
+                    tbody.appendChild(partRowGroup);
+                }
+            });
+            
+            table.appendChild(tbody);
+            surfaceFinishList.appendChild(table);
+            surfaceFinishModal.style.display = 'flex';
         }
 
         // Update the machine status summary
@@ -1481,11 +1947,11 @@ input:checked + .summary-toggle-slider:before {
             // Add column headers
             const columnHeaders = [
                 '1st Piece Report',
-                'Calibration Due',
-                'Reading 1',
-                'Reading 2',
-                'Reading 3',
-                'Reading 4'
+                'Calib Due',
+                'Round 1',
+                'Round 2',
+                'Round 3',
+                'Round 4'
             ];
             
             columnHeaders.forEach(headerText => {
@@ -1913,34 +2379,34 @@ input:checked + .summary-toggle-slider:before {
                     <div class="status-dropdown">
                         <label for="status-2-${part.id}">Round 2</label>
                         <select id="status-2-${part.id}" class="status-dropdown" style="font-weight: bold;">
-    <option value="NA" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'NA' ? 'selected' : ''}>NA</option>
-    <option value="On" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'On' ? 'selected' : ''}>On</option>
-    <option value="Off" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'Off' ? 'selected' : ''}>Off</option>
-    <option value="Setup" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'Setup' ? 'selected' : ''}>Setup</option>
-    <option value="Setup Change" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'Setup Change' ? 'selected' : ''}>Setup Change</option>
-    <option value="Other Setup" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'Other Setup' ? 'selected' : ''}>Other Setup</option>
+    <option value="NA" ${machinePartsMap[currentMachine][part.id].dropdowns.status2 === 'NA' ? 'selected' : ''}>NA</option>
+    <option value="On" ${machinePartsMap[currentMachine][part.id].dropdowns.status2 === 'On' ? 'selected' : ''}>On</option>
+    <option value="Off" ${machinePartsMap[currentMachine][part.id].dropdowns.status2 === 'Off' ? 'selected' : ''}>Off</option>
+    <option value="Setup" ${machinePartsMap[currentMachine][part.id].dropdowns.status2 === 'Setup' ? 'selected' : ''}>Setup</option>
+    <option value="Setup Change" ${machinePartsMap[currentMachine][part.id].dropdowns.status2 === 'Setup Change' ? 'selected' : ''}>Setup Change</option>
+    <option value="Other Setup" ${machinePartsMap[currentMachine][part.id].dropdowns.status2 === 'Other Setup' ? 'selected' : ''}>Other Setup</option>
 </select>
                     </div>
                     <div class="status-dropdown">
                         <label for="status-3-${part.id}">Round 3</label>
                         <select id="status-3-${part.id}" class="status-dropdown" style="font-weight: bold;">
-    <option value="NA" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'NA' ? 'selected' : ''}>NA</option>
-    <option value="On" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'On' ? 'selected' : ''}>On</option>
-    <option value="Off" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'Off' ? 'selected' : ''}>Off</option>
-    <option value="Setup" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'Setup' ? 'selected' : ''}>Setup</option>
-    <option value="Setup Change" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'Setup Change' ? 'selected' : ''}>Setup Change</option>
-    <option value="Other Setup" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'Other Setup' ? 'selected' : ''}>Other Setup</option>
+    <option value="NA" ${machinePartsMap[currentMachine][part.id].dropdowns.status3 === 'NA' ? 'selected' : ''}>NA</option>
+    <option value="On" ${machinePartsMap[currentMachine][part.id].dropdowns.status3 === 'On' ? 'selected' : ''}>On</option>
+    <option value="Off" ${machinePartsMap[currentMachine][part.id].dropdowns.status3 === 'Off' ? 'selected' : ''}>Off</option>
+    <option value="Setup" ${machinePartsMap[currentMachine][part.id].dropdowns.status3 === 'Setup' ? 'selected' : ''}>Setup</option>
+    <option value="Setup Change" ${machinePartsMap[currentMachine][part.id].dropdowns.status3 === 'Setup Change' ? 'selected' : ''}>Setup Change</option>
+    <option value="Other Setup" ${machinePartsMap[currentMachine][part.id].dropdowns.status3 === 'Other Setup' ? 'selected' : ''}>Other Setup</option>
 </select>
                     </div>
                     <div class="status-dropdown">
                         <label for="status-4-${part.id}">Round 4</label>
                         <select id="status-4-${part.id}" class="status-dropdown" style="font-weight: bold;">
-    <option value="NA" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'NA' ? 'selected' : ''}>NA</option>
-    <option value="On" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'On' ? 'selected' : ''}>On</option>
-    <option value="Off" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'Off' ? 'selected' : ''}>Off</option>
-    <option value="Setup" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'Setup' ? 'selected' : ''}>Setup</option>
-    <option value="Setup Change" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'Setup Change' ? 'selected' : ''}>Setup Change</option>
-    <option value="Other Setup" ${machinePartsMap[currentMachine][part.id].dropdowns.status1 === 'Other Setup' ? 'selected' : ''}>Other Setup</option>
+    <option value="NA" ${machinePartsMap[currentMachine][part.id].dropdowns.status4 === 'NA' ? 'selected' : ''}>NA</option>
+    <option value="On" ${machinePartsMap[currentMachine][part.id].dropdowns.status4 === 'On' ? 'selected' : ''}>On</option>
+    <option value="Off" ${machinePartsMap[currentMachine][part.id].dropdowns.status4 === 'Off' ? 'selected' : ''}>Off</option>
+    <option value="Setup" ${machinePartsMap[currentMachine][part.id].dropdowns.status4 === 'Setup' ? 'selected' : ''}>Setup</option>
+    <option value="Setup Change" ${machinePartsMap[currentMachine][part.id].dropdowns.status4 === 'Setup Change' ? 'selected' : ''}>Setup Change</option>
+    <option value="Other Setup" ${machinePartsMap[currentMachine][part.id].dropdowns.status4 === 'Other Setup' ? 'selected' : ''}>Other Setup</option>
 </select>
                     </div>
                 </div>
@@ -1995,7 +2461,14 @@ input:checked + .summary-toggle-slider:before {
             
             // Add listeners for each observation button
             for (let i = 1; i <= 4; i++) {
-                partCard.querySelector(`.fill-obs-${i}`).addEventListener('click', () => fillObservation(part.id, i));
+                partCard.querySelector(`.fill-obs-${i}`).addEventListener('click', () => {
+                    // Only fill if the status is "On"
+                    if (machinePartsMap[currentMachine][part.id].dropdowns[`status${i}`] === 'On') {
+                        fillObservation(part.id, i);
+                    } else {
+                        alert(`Cannot fill observations for Round ${i} - status must be set to "On"`);
+                    }
+                });
                 partCard.querySelector(`.clear-obs-${i}`).addEventListener('click', () => clearObservation(part.id, i));
             }
             
@@ -2023,13 +2496,21 @@ input:checked + .summary-toggle-slider:before {
                     machinePartsMap[currentMachine][part.id].dropdowns[`status${i}`] = e.target.value;
                     saveToLocalStorage();
                     updateObservationColumnColors(part.id);
+                    updateInputFieldStates(part.id, i, e.target.value);
                 });
+                
+                // Initialize input field states based on current dropdown value
+                updateInputFieldStates(part.id, i, machinePartsMap[currentMachine][part.id].dropdowns[`status${i}`]);
             }
             
             // Add input change listeners for observation fields
             partCard.querySelectorAll('.observation-input').forEach(input => {
                 input.addEventListener('click', (e) => {
-                    showValueSelector(e.target, part.id, input.dataset.char, input.dataset.obs);
+                    // Only allow input if the corresponding status is "On"
+                    const obsNum = e.target.dataset.obs;
+                    if (machinePartsMap[currentMachine][part.id].dropdowns[`status${obsNum}`] === 'On') {
+                        showValueSelector(e.target, part.id, input.dataset.char, input.dataset.obs);
+                    }
                 });
                 
                 input.addEventListener('change', (e) => {
@@ -2095,6 +2576,23 @@ applyDropdownStyles();
             updateObservationColumnColors(part.id);
         }
         
+        // Update input field states based on dropdown selection
+        function updateInputFieldStates(partId, obsNum, status) {
+            const partCard = document.querySelector(`.part-info[data-part-id="${partId}"]`);
+            if (!partCard) return;
+            
+            const inputs = partCard.querySelectorAll(`.observation-input[data-obs="${obsNum}"]`);
+            inputs.forEach(input => {
+                if (status === 'On') {
+                    input.disabled = false;
+                    input.style.backgroundColor = '';
+                } else {
+                    input.disabled = true;
+                    input.style.backgroundColor = '#f0f0f0';
+                }
+            });
+        }
+        
         function applyDropdownStyles() {
     document.querySelectorAll('.status-dropdown').forEach(dropdown => {
         // Apply color based on current value
@@ -2130,46 +2628,47 @@ applyDropdownStyles();
 
 
         // Update observation column colors based on dropdown selections
-        function updateObservationColumnColors(partId) {
-            const partCard = document.querySelector(`.part-info[data-part-id="${partId}"]`);
-            if (!partCard) return;
-            
-            // Get all observation columns (7th to 10th columns)
-            const observationColumns = [
-                { colIndex: 7, dropdownId: `status-1-${partId}` },
-                { colIndex: 8, dropdownId: `status-2-${partId}` },
-                { colIndex: 9, dropdownId: `status-3-${partId}` },
-                { colIndex: 10, dropdownId: `status-4-${partId}` }
-            ];
-            
-            observationColumns.forEach(({ colIndex, dropdownId }) => {
-                const dropdown = partCard.querySelector(`#${dropdownId}`);
-                if (!dropdown) return;
+     function updateObservationColumnColors(partId) {
+    const partCard = document.querySelector(`.part-info[data-part-id="${partId}"]`);
+    if (!partCard) return;
+    
+    // Get all observation columns (7th to 10th columns)
+    const observationColumns = [
+        { colIndex: 6, dropdownId: `status-1-${partId}` },  // Reading 1 (index 6)
+        { colIndex: 7, dropdownId: `status-2-${partId}` },  // Reading 2 (index 7)
+        { colIndex: 8, dropdownId: `status-3-${partId}` },  // Reading 3 (index 8)
+        { colIndex: 9, dropdownId: `status-4-${partId}` }   // Reading 4 (index 9)
+    ];
+    
+    observationColumns.forEach(({ colIndex, dropdownId }) => {
+        const dropdown = partCard.querySelector(`#${dropdownId}`);
+        if (!dropdown) return;
+        
+        const selectedValue = dropdown.value;
+        const table = partCard.querySelector('.observation-table');
+        if (!table) return;
+        
+        // Get all cells in this column (including header row)
+        const rows = table.querySelectorAll('tr');
+        for (let i = 0; i < rows.length; i++) {
+            const cells = rows[i].cells;
+            if (cells.length > colIndex) {
+                // Remove all existing color classes
+                cells[colIndex].classList.remove('obs-on', 'obs-off', 'obs-setup');
                 
-                const selectedValue = dropdown.value;
-                const table = partCard.querySelector('.observation-table');
-                if (!table) return;
-                
-                // Get all cells in this column (skip header row)
-                const rows = table.querySelectorAll('tr');
-                for (let i = 1; i < rows.length; i++) {
-                    const cells = rows[i].cells;
-                    if (cells.length > colIndex) {
-                        // Remove all existing color classes
-                        cells[colIndex - 1].classList.remove('obs-on', 'obs-off', 'obs-setup');
-                        
-                        // Add appropriate color class based on dropdown value
-                        if (selectedValue === 'On') {
-                            cells[colIndex - 1].classList.add('obs-on');
-                        } else if (selectedValue === 'Off' || selectedValue === 'Setup Change' || selectedValue === 'Other Setup' || selectedValue === 'Maintenance') {
-                            cells[colIndex - 1].classList.add('obs-off');
-                        } else if (selectedValue === 'Setup') {
-                            cells[colIndex - 1].classList.add('obs-setup');
-                        }
-                    }
+                // Add appropriate color class based on dropdown value
+                if (selectedValue === 'On') {
+                    cells[colIndex].classList.add('obs-on');
+                } else if (selectedValue === 'Off' || selectedValue === 'Setup Change' || selectedValue === 'Other Setup') {
+                    cells[colIndex].classList.add('obs-off');
+                } else if (selectedValue === 'Setup') {
+                    cells[colIndex].classList.add('obs-setup');
                 }
-            });
+            }
         }
+    });
+}
+
 
 function renderObservationRows(part) {
             return part.characteristics.map(char => {
@@ -2256,15 +2755,19 @@ function renderObservationRows(part) {
                 else if (tol && tol.upper !== undefined && tol.lower !== undefined && tol.step !== undefined) {
                     const { upper, lower, step } = tol;
                     
-                    // Check if we should apply the ±10% range rule
+                    // Check if we should apply the range rule
                     if (hasRangeRule && machinePartsMap[currentMachine][partId].lastValues?.[charName]) {
                         const lastValue = parseFloat(machinePartsMap[currentMachine][partId].lastValues[charName]);
                         if (!isNaN(lastValue)) {
-                            // Calculate ±10% range
-                            const minValue = lastValue * 0.9;
-                            const maxValue = lastValue * 1.1;
+                            // Calculate ±30% of the full range
+                            const fullRange = upper - lower;
+                            const range10Percent = fullRange * 0.3;
                             
-                            // Find the range that fits within both the ±10% and the tolerance limits
+                            // Calculate min/max values based on previous value ±10% of full range
+                            const minValue = lastValue - range10Percent;
+                            const maxValue = lastValue + range10Percent;
+                            
+                            // Find the range that fits within both the ±10% range and the tolerance limits
                             const adjustedMin = Math.max(minValue, lower);
                             const adjustedMax = Math.min(maxValue, upper);
                             
@@ -2275,7 +2778,7 @@ function renderObservationRows(part) {
                                 const randomValue = adjustedMin + (randomStep * step);
                                 value = randomValue >= 0 ? `+${randomValue.toFixed(3)}` : randomValue.toFixed(3);
                             } else {
-                                // If ±10% range doesn't overlap with tolerance, fall back to standard logic
+                                // If range doesn't overlap with tolerance, fall back to standard logic
                                 value = generateRandomValueWithinTolerance(upper, lower, step);
                             }
                         } else {
@@ -2469,7 +2972,7 @@ function renderObservationRows(part) {
         }
 
         // Add common options
-        const commonOptions = ['NA', 'OFF', 'OK', '✓', '-'];
+        const commonOptions = ['NA', 'OFF', 'OK', '✓', '-', ''];
         currentValueSelector.values = [...currentValueSelector.values, ...commonOptions];
 
         // Set pagination limit
@@ -2587,5 +3090,7 @@ function renderValueSelectorGrid() {
 </script>
 
 </body>
+
+
 </html>
 
